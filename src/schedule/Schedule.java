@@ -29,7 +29,7 @@ public class Schedule extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         setPrimaryStage(stage);
-        Parent root = FXMLLoader.load(getClass().getResource("logInScreen.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("views/logInScreen.fxml"));
         
         Scene scene = new Scene(root);
         

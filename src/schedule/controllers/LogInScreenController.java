@@ -1,10 +1,17 @@
 
-package schedule;
+package schedule.controllers;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
@@ -22,6 +29,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import schedule.DataBase;
+import schedule.Schedule;
+import schedule.User;
 
 /**
  * FXML Controller class
@@ -45,14 +55,37 @@ public class LogInScreenController implements Initializable {
     Stage currentStage; 
     Locale currentLocale;
     String errorString;
-    public Stage primaryStage;
+    private Stage primaryStage;
+    private static Optional<User> currentUser=null;
+    private List<User> authorizedUsers;
+    private boolean validLogin = false;
+    private DataBase db;
+    private Statement stmt;
+    
+    
+    public static User getCurrentUser(){
+        return currentUser.get();
+    }
 
     
     public void handleLogInButton(ActionEvent event) {
-        if (uNameTF.getText().equals("test") && passwordTF.getText().equals("test")){
+        
+        if (!authorizedUsers.isEmpty()) {
+            validLogin = authorizedUsers.stream()
+                                        .anyMatch(s -> s.getUserName().equals(uNameTF.getText()) && s.getPassword().equals(passwordTF.getText()));
+        } else {
+            validLogin = false;
+        }
+
+        if (validLogin) {
+            
+                  
+            currentUser = authorizedUsers.stream()
+                                         .filter(s -> s.getUserName().equals(uNameTF.getText()))
+                                         .findFirst();
             messageBannerLabel.setVisible(false);
             try {
-                Parent mainParent = FXMLLoader.load(getClass().getResource("main.fxml"));
+                Parent mainParent = FXMLLoader.load(getClass().getClassLoader().getResource("schedule/views/main.fxml"));
                 Scene mainScene = new Scene(mainParent);
                 Stage mainStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 mainStage.setScene(mainScene);
@@ -67,6 +100,25 @@ public class LogInScreenController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        authorizedUsers = new ArrayList<>();
+        db = new DataBase();
+        stmt=null;
+        try {
+            stmt = db.createConnection();
+        } catch (SQLException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("*********ERROR***********: " + ex);
+        }
+        try {
+            ResultSet rs = stmt.executeQuery("SELECT userId, userName, password FROM user");
+            while (rs.next()){
+                authorizedUsers.add(new User(rs.getInt("userId"), rs.getString("userName"), rs.getString("password")));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(LogInScreenController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
         currentLocale = Locale.getDefault();
         //currentLocale = new Locale("fr", "FR");  //UNCOMMENT FOR FRENCH
         currentStage = Schedule.getPrimaryStage();

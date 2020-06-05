@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
@@ -9,7 +10,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="schedule.MainController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="schedule.controllers.MainController">
    <children>
       <TabPane layoutX="5.0" layoutY="5.0" prefHeight="750.0" prefWidth="1190.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
@@ -19,13 +20,13 @@
                      <children>
                         <TableView fx:id="customerTV" layoutX="5.0" layoutY="5.0" prefHeight="670.0" prefWidth="1180.0">
                           <columns>
-                            <TableColumn fx:id="lNameCol" prefWidth="195.00000762939453" text="Last Name" />
-                            <TableColumn fx:id="fNameCol" prefWidth="169.99999237060547" text="First Name" />
-                              <TableColumn fx:id="addressCol" prefWidth="259.3333282470703" text="Address" />
-                              <TableColumn fx:id="cityCol" prefWidth="171.3333282470703" text="City" />
-                              <TableColumn fx:id="stateCol" prefWidth="91.33334350585938" text="State" />
-                              <TableColumn fx:id="zipCol" prefWidth="118.33331298828125" text="Zip" />
-                              <TableColumn fx:id="phoneCol" prefWidth="175.33331298828125" text="Phone" />
+                            <TableColumn fx:id="nameCol" prefWidth="314.6666717529297" text="Customer Name" />
+                              <TableColumn fx:id="addressCol" prefWidth="251.66665649414062" text="Address" />
+                              <TableColumn fx:id="address2Col" prefWidth="97.33334350585938" text="Address 2" />
+                              <TableColumn fx:id="cityCol" prefWidth="117.0" text="City" />
+                              <TableColumn fx:id="countryCol" prefWidth="139.66668701171875" text="Country" />
+                              <TableColumn fx:id="zipCol" prefWidth="108.66668701171875" text="Zip" />
+                              <TableColumn fx:id="phoneCol" prefWidth="153.0" text="Phone" />
                           </columns>
                         </TableView>
                         <ButtonBar layoutX="5.0" layoutY="675.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="1180.0">

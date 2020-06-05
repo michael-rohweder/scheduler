@@ -1,7 +1,11 @@
-package schedule;
+package schedule.controllers;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,6 +28,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import schedule.DAO.CustomerDAO;
+import schedule.DataBase;
+import schedule.User;
+import schedule.customer;
 
 public class MainController implements Initializable {
 
@@ -38,15 +46,15 @@ public class MainController implements Initializable {
     @FXML
     private Button deleteCustomerButton;
     @FXML
-    private TableColumn<customer, String> lNameCol;
-    @FXML
-    private TableColumn<customer, String> fNameCol;
+    private TableColumn<customer, String> nameCol;
     @FXML
     private TableColumn<customer, String> addressCol;
     @FXML
+    private TableColumn<customer, String> address2Col;
+    @FXML
     private TableColumn<customer, String> cityCol;
     @FXML
-    private TableColumn<customer, String> stateCol;
+    private TableColumn<customer, String> countryCol;
     @FXML
     private TableColumn<customer, Integer> zipCol;
     @FXML
@@ -54,27 +62,34 @@ public class MainController implements Initializable {
     @FXML
     private TableView customerTV;
     @FXML
-    private Button exitButton;
-    public Stage primaryStage;
+    private Stage primaryStage;
+    private User currentUser = LogInScreenController.getCurrentUser();
+    private final CustomerDAO customerDao;
     
     public static ObservableList<customer> customerList = FXCollections.observableArrayList();
 
-    public void handleCustomerDeleteButton(ActionEvent event){
+    public MainController() throws SQLException {
+        this.customerDao = new CustomerDAO();
+    }
+
+    public void handleCustomerDeleteButton(ActionEvent event) throws SQLException{
         customer selectedCustomer = (customer) customerTV.getSelectionModel().getSelectedItem();
+        customerDao.delete(selectedCustomer);
         customerList.remove(selectedCustomer);
     }
+    
     public void handleCustomerSearchButton(ActionEvent event){
         if (customerSearchButton.getText().equals("Search")) {
             customerSearchButton.setText("Clear Search");
             customerSearchTF.editableProperty().set(false);
             String searchString = customerSearchTF.getText();
+            
             //Stream & Lambda to filter the customer list based on search terms
             ObservableList<customer> filteredList = customerList.stream()
-                    .filter(s -> s.getFName().toLowerCase().contains(searchString.toLowerCase()) || 
-                                 s.getLName().toLowerCase().contains(searchString.toLowerCase()) || 
+                    .filter(s -> s.getName().toLowerCase().contains(searchString.toLowerCase()) || 
                                  s.getAddress().toLowerCase().contains(searchString.toLowerCase()) ||
                                  s.getCity().toLowerCase().contains(searchString.toLowerCase()) ||
-                                 s.getState().toLowerCase().contains(searchString.toLowerCase()) ||
+                                 s.getCountry().toLowerCase().contains(searchString.toLowerCase()) ||
                                  String.valueOf(s.getZip()).contains(searchString) ||
                                  s.getPhone().contains(searchString))
                     .collect(Collectors.toCollection(FXCollections::observableArrayList));
@@ -89,14 +104,14 @@ public class MainController implements Initializable {
     
     public void handleAddCustomerButton(ActionEvent event){
         try {
-                Parent mainParent = FXMLLoader.load(getClass().getResource("addCustomer.fxml"));
-                Scene mainScene = new Scene(mainParent);
-                Stage mainStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                mainStage.setScene(mainScene);
-                mainStage.show();
-            } catch (IOException ex) {
-                Logger.getLogger(LogInScreenController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            Parent mainParent = FXMLLoader.load(getClass().getClassLoader().getResource("schedule/views/addCustomer.fxml"));
+            Scene mainScene = new Scene(mainParent);
+            Stage mainStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            mainStage.setScene(mainScene);
+            mainStage.show();
+        } catch (IOException ex) {
+            Logger.getLogger(LogInScreenController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     public void handleExitButton(ActionEvent event) {
         System.exit(0);
@@ -105,18 +120,20 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
-        lNameCol.setCellValueFactory(new PropertyValueFactory<>("lName"));
-        fNameCol.setCellValueFactory(new PropertyValueFactory<>("fName"));
+        customerList = customerDao.getAll();
+        
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
+        address2Col.setCellValueFactory(new PropertyValueFactory<>("address2"));
         cityCol.setCellValueFactory(new PropertyValueFactory<>("city"));
-        stateCol.setCellValueFactory(new PropertyValueFactory<>("state"));
+        countryCol.setCellValueFactory(new PropertyValueFactory<>("country"));
         zipCol.setCellValueFactory(new PropertyValueFactory<>("zip"));
         phoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
         customerTV.setItems(customerList);
         
-        
         Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
-        //delay execution until after initialized - centers window in the screen.  Using lambda to make code more readable and not requre anon inner class
+        
+        //delay execution until after initialized - centers window in the screen.  Using lambda to make code more readable and not require anon inner class
         Platform.runLater(() -> {
             primaryStage = (Stage)addCustomerButton.getScene().getWindow();
             primaryStage.setX((primScreenBounds.getWidth() - primaryStage.getWidth()) / 2);

@@ -10,37 +10,41 @@ package schedule;
  * @author micha
  */
 public class customer {
-    private String fName, lName, address, city, state, phone;
-    private int zip;
+    private String name, address, address2, city, country, phone;
+    private int zip, Id;
     
-    public customer(String fName, String lName, String address, String city, String state, int zip, String phone){
-        this.fName=fName;
-        this.lName=lName;
+    public customer(int Id, String name, String address, String address2, String city, String country, int zip, String phone){
+        this.Id=Id;
+        this.name=name;
         this.address=address;
+        this.address2=address2;
         this.city=city;
-        this.state=state;
+        this.country=country;
         this.zip=zip;
         this.phone=phone;
     }
 
-    public String getFName() {
-        return fName;
+    public int getId(){
+        return this.Id;
     }
-
-    public String getLName() {
-        return lName;
+    public String getName() {
+        return name;
     }
 
     public String getAddress() {
         return address;
+    }
+    
+    public String getAddress2() {
+        return address2;
     }
 
     public String getCity() {
         return city;
     }
 
-    public String getState() {
-        return state;
+    public String getCountry() {
+        return country;
     }
 
     public String getPhone() {
@@ -51,24 +55,24 @@ public class customer {
         return zip;
     }
 
-    public void setfName(String fName) {
-        this.fName = fName;
-    }
-
-    public void setlName(String lName) {
-        this.lName = lName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setAddress(String address) {
         this.address = address;
+    }
+    
+    public void setAddress2(String address) {
+        this.address2 = address;
     }
 
     public void setCity(String city) {
         this.city = city;
     }
 
-    public void setState(String state) {
-        this.state = state;
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public void setPhone(String phone) {

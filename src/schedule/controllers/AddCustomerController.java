@@ -1,12 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package schedule;
+package schedule.controllers;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,12 +27,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import schedule.DAO.CustomerDAO;
+import schedule.DataBase;
+import schedule.User;
+import schedule.customer;
 
-/**
- * FXML Controller class
- *
- * @author micha
- */
 public class AddCustomerController implements Initializable {
 
     @FXML
@@ -46,27 +45,32 @@ public class AddCustomerController implements Initializable {
     @FXML
     private TextField addressTF;
     @FXML
+    private TextField address2TF;
+    @FXML
     private TextField cityTF;
     @FXML
-    private TextField stateTF;
+    private TextField countryTF;
     @FXML
     private TextField zipTF;
     @FXML
     private TextField phoneTF;
-    @FXML private Label fNameLabel;
-    @FXML private Label lNameLabel;
-    @FXML private Label addressLabel;
-    @FXML private Label cityLabel;
-    @FXML private Label stateLabel;
-    @FXML private Label zipLabel;
-    @FXML private Label phoneLabel;
+  
     public Stage primaryStage;
+    private User currentUser = LogInScreenController.getCurrentUser();
+    private CustomerDAO customerDao;
 
-    public void handleSaveButton(ActionEvent event){
+    public AddCustomerController() throws SQLException {
+        this.customerDao = new CustomerDAO();
+    }
+
+    public void handleSaveButton(ActionEvent event) throws SQLException{
         if (validateInput()){
-            MainController.customerList.add(new customer(fNameTF.getText(), lNameTF.getText(), addressTF.getText(), cityTF.getText(), stateTF.getText(),Integer.parseInt(zipTF.getText()), phoneTF.getText()));
+            
+            String customerName = fNameTF.getText() + " " + lNameTF.getText();
+            customerDao.add(new customer(0,customerName, addressTF.getText(), address2TF.getText(), cityTF.getText(), countryTF.getText(),Integer.parseInt(zipTF.getText()), phoneTF.getText()), currentUser);
+            
             try {
-                    Parent mainParent = FXMLLoader.load(getClass().getResource("main.fxml"));
+                    Parent mainParent = FXMLLoader.load(getClass().getClassLoader().getResource("schedule/views/main.fxml"));
                     Scene mainScene = new Scene(mainParent);
                     Stage mainStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                     mainStage.setScene(mainScene);
@@ -79,7 +83,7 @@ public class AddCustomerController implements Initializable {
     
     public void handleCancelButton(ActionEvent event){
         try {
-                Parent mainParent = FXMLLoader.load(getClass().getResource("main.fxml"));
+                Parent mainParent = FXMLLoader.load(getClass().getClassLoader().getResource("schedule/views/main.fxml"));
                 Scene mainScene = new Scene(mainParent);
                 Stage mainStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 mainStage.setScene(mainScene);
@@ -91,17 +95,19 @@ public class AddCustomerController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
         Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
         Platform.runLater(() -> {
             primaryStage = (Stage)zipTF.getScene().getWindow();
             primaryStage.setX((primScreenBounds.getWidth() - primaryStage.getWidth()) / 2);
             primaryStage.setY((primScreenBounds.getHeight() - primaryStage.getHeight()) / 2);    
-            });    }    
+            });    
+    }    
     
     private boolean validateInput(){
         boolean valid = false;
         
-        if (!fNameTF.getText().isEmpty() && !lNameTF.getText().isEmpty() && !addressTF.getText().isEmpty() && !cityTF.getText().isEmpty() && !stateTF.getText().isEmpty() && !zipTF.getText().isEmpty() && !phoneTF.getText().isEmpty())
+        if (!fNameTF.getText().isEmpty() && !lNameTF.getText().isEmpty() && !addressTF.getText().isEmpty() && !cityTF.getText().isEmpty() && !countryTF.getText().isEmpty() && !zipTF.getText().isEmpty() && !phoneTF.getText().isEmpty())
         {
             if (isInt(zipTF.getText())){
                 valid=true;

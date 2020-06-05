@@ -6,28 +6,30 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="schedule.AddCustomerController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="schedule.controllers.AddCustomerController">
    <children>
       <Button fx:id="saveButton" layoutX="5.0" layoutY="370.0" mnemonicParsing="false" onAction="#handleSaveButton" text="Save" />
       <Button fx:id="cancelButton" layoutX="540.0" layoutY="370.0" mnemonicParsing="false" onAction="#handleCancelButton" text="Cancel" />
       <TextField fx:id="fNameTF" layoutX="262.0" layoutY="84.0" />
       <TextField fx:id="lNameTF" layoutX="262.0" layoutY="123.0" />
       <TextField fx:id="addressTF" layoutX="262.0" layoutY="160.0" />
-      <TextField fx:id="cityTF" layoutX="262.0" layoutY="205.0" />
-      <TextField fx:id="stateTF" layoutX="262.0" layoutY="248.0" />
-      <TextField fx:id="zipTF" layoutX="262.0" layoutY="294.0" />
-      <TextField fx:id="phoneTF" layoutX="262.0" layoutY="338.0" />
+      <TextField fx:id="cityTF" layoutX="262.0" layoutY="228.0" />
+      <TextField fx:id="countryTF" layoutX="262.0" layoutY="271.0" />
+      <TextField fx:id="zipTF" layoutX="262.0" layoutY="317.0" />
+      <TextField fx:id="phoneTF" layoutX="262.0" layoutY="361.0" />
       <Label fx:id="fNameLabel" layoutX="190.0" layoutY="88.0" text="First Name" />
       <Label fx:id="lNameLabel" layoutX="190.0" layoutY="127.0" text="Last Name" />
       <Label fx:id="addressLabel" layoutX="190.0" layoutY="164.0" text="Address" />
-      <Label fx:id="cityLabel" layoutX="190.0" layoutY="209.0" text="City" />
-      <Label fx:id="stateLabel" layoutX="190.0" layoutY="252.0" text="State" />
-      <Label fx:id="zipLabel" layoutX="190.0" layoutY="298.0" text="Zip" />
-      <Label fx:id="phoneLabel" layoutX="190.0" layoutY="342.0" text="Phone" />
+      <Label fx:id="cityLabel" layoutX="190.0" layoutY="232.0" text="City" />
+      <Label fx:id="countryLabel" layoutX="190.0" layoutY="275.0" text="Country" />
+      <Label fx:id="zipLabel" layoutX="190.0" layoutY="321.0" text="Zip" />
+      <Label fx:id="phoneLabel" layoutX="190.0" layoutY="365.0" text="Phone" />
       <Label layoutX="121.0" layoutY="14.0" text="ADD CUSTOMER">
          <font>
             <Font size="48.0" />
          </font>
       </Label>
+      <TextField fx:id="address2TF" layoutX="262.0" layoutY="194.0" />
+      <Label fx:id="address2Label" layoutX="190.0" layoutY="198.0" text="Address 2" />
    </children>
 </AnchorPane>
