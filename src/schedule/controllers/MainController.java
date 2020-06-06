@@ -7,8 +7,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ResourceBundle;
+import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 import java.util.stream.Collectors;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -65,17 +67,39 @@ public class MainController implements Initializable {
     private Stage primaryStage;
     private User currentUser = LogInScreenController.getCurrentUser();
     private final CustomerDAO customerDao;
+    private static customer selectedCustomer;
+    
     
     public static ObservableList<customer> customerList = FXCollections.observableArrayList();
 
-    public MainController() throws SQLException {
+    public MainController() throws SQLException, IOException {
         this.customerDao = new CustomerDAO();
+        
     }
 
+    public static customer getSelectedCustomer(){
+        return selectedCustomer;
+    }
+    
     public void handleCustomerDeleteButton(ActionEvent event) throws SQLException{
-        customer selectedCustomer = (customer) customerTV.getSelectionModel().getSelectedItem();
+        selectedCustomer = (customer) customerTV.getSelectionModel().getSelectedItem();
+        
+        
         customerDao.delete(selectedCustomer);
         customerList.remove(selectedCustomer);
+    }
+    
+    public void handleCustomerModifyButton(ActionEvent event){
+        selectedCustomer = (customer) customerTV.getSelectionModel().getSelectedItem();
+        try {
+            Parent mainParent = FXMLLoader.load(getClass().getClassLoader().getResource("schedule/views/modifyCustomer.fxml"));
+            Scene mainScene = new Scene(mainParent);
+            Stage mainStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            mainStage.setScene(mainScene);
+            mainStage.show();
+        } catch (IOException ex) {
+            Logger.getLogger(LogInScreenController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public void handleCustomerSearchButton(ActionEvent event){

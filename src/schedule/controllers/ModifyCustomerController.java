@@ -8,7 +8,6 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
@@ -30,11 +29,10 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import schedule.DAO.CustomerDAO;
 import schedule.DataBase;
-import schedule.LogFile;
 import schedule.User;
 import schedule.customer;
 
-public class AddCustomerController implements Initializable {
+public class ModifyCustomerController implements Initializable {
 
     @FXML
     private Button saveButton;
@@ -72,13 +70,9 @@ public class AddCustomerController implements Initializable {
     private Label phoneLabel;
     @FXML
     private Label address2Label;
-    
-    LogFile logFile;
-    Logger logger;
+    private customer passedCustomer;
 
-    public AddCustomerController() throws SQLException, IOException {
-        this.logFile = new LogFile();
-        logger = logFile.getLogger();
+    public ModifyCustomerController() throws SQLException {
         this.customerDao = new CustomerDAO();
     }
 
@@ -86,7 +80,15 @@ public class AddCustomerController implements Initializable {
     public void handleSaveButton(ActionEvent event) throws SQLException{
         if (validateInput()){
             
-            customerDao.add(new customer(0,customerNameTF.getText(), addressTF.getText(), address2TF.getText(), cityTF.getText(), countryTF.getText(),Integer.parseInt(zipTF.getText()), phoneTF.getText()), currentUser);
+            passedCustomer.setName(customerNameTF.getText());
+            passedCustomer.setAddress(addressTF.getText());
+            passedCustomer.setAddress2(address2TF.getText());
+            passedCustomer.setCity(cityTF.getText());
+            passedCustomer.setZip(Integer.parseInt(zipTF.getText()));
+            passedCustomer.setCountry(countryTF.getText());
+            
+            customerDao.update(passedCustomer);
+            
             try {
                     Parent mainParent = FXMLLoader.load(getClass().getClassLoader().getResource("schedule/views/main.fxml"));
                     Scene mainScene = new Scene(mainParent);
@@ -112,7 +114,7 @@ public class AddCustomerController implements Initializable {
             }
     }
     
-    
+   
     
     private boolean validateInput(){
         boolean valid = false;
@@ -149,6 +151,17 @@ public class AddCustomerController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
+        passedCustomer = MainController.getSelectedCustomer();
+        
+        customerNameTF.setText(passedCustomer.getName());
+        addressTF.setText(passedCustomer.getAddress());
+        address2TF.setText(passedCustomer.getAddress2());
+        cityTF.setText(passedCustomer.getCity());
+        countryTF.setText(passedCustomer.getCountry());
+        zipTF.setText(String.valueOf(passedCustomer.getZip()));
+        phoneTF.setText(passedCustomer.getPhone());
+        
         
         Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
         Platform.runLater(() -> {

@@ -1,0 +1,13 @@
+Jun 05, 2020 11:33:34 PM schedule.controllers.LogInScreenController handleLogInButton
+WARNING: INVALID LOG IN ATTEMPT:
+UserName: test
+Password: 1
+
+Jun 05, 2020 11:33:41 PM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 05, 2020 11:33:50 PM schedule.DAO.CustomerDAO delete
+INFO: User ID: 1(test) deleted a customer
+Customer ID: 31(Toby)
+

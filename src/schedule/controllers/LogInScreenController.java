@@ -30,6 +30,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import schedule.DataBase;
+import schedule.LogFile;
 import schedule.Schedule;
 import schedule.User;
 
@@ -61,6 +62,8 @@ public class LogInScreenController implements Initializable {
     private boolean validLogin = false;
     private DataBase db;
     private Statement stmt;
+    private LogFile logFile;
+    private Logger logger;
     
     
     public static User getCurrentUser(){
@@ -79,7 +82,10 @@ public class LogInScreenController implements Initializable {
 
         if (validLogin) {
             
-                  
+            String logFile = "LOG IN SUCCESSFUL:\n"
+                + "UserName: " + uNameTF.getText() + "\n";
+            logger.info(logFile);  
+            
             currentUser = authorizedUsers.stream()
                                          .filter(s -> s.getUserName().equals(uNameTF.getText()))
                                          .findFirst();
@@ -95,11 +101,21 @@ public class LogInScreenController implements Initializable {
             }
         } else {
             messageBannerLabel.setVisible(true);
+            String logFile = "INVALID LOG IN ATTEMPT:\n"
+                + "UserName: " + uNameTF.getText() + "\n"
+                + "Password: " + passwordTF.getText() + "\n";
+            logger.warning(logFile);
         } 
     }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        try {
+            this.logFile = new LogFile();
+        } catch (IOException ex) {
+            Logger.getLogger(LogInScreenController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        logger = logFile.getLogger();
         authorizedUsers = new ArrayList<>();
         db = new DataBase();
         stmt=null;

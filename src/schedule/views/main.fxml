@@ -10,7 +10,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="schedule.controllers.MainController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.241" xmlns:fx="http://javafx.com/fxml/1" fx:controller="schedule.controllers.MainController">
    <children>
       <TabPane layoutX="5.0" layoutY="5.0" prefHeight="750.0" prefWidth="1190.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
@@ -34,7 +34,7 @@
                               <TextField fx:id="customerSearchTF" />
                               <Button fx:id="customerSearchButton" mnemonicParsing="false" onAction="#handleCustomerSearchButton" text="Search" />
                               <Button fx:id="addCustomerButton" mnemonicParsing="false" onAction="#handleAddCustomerButton" text="Add Customer" />
-                              <Button fx:id="modifyCustomerButton" mnemonicParsing="false" text="Modify Customer" />
+                              <Button fx:id="modifyCustomerButton" mnemonicParsing="false" onAction="#handleCustomerModifyButton" text="Modify Customer" />
                             <Button fx:id="deleteCustomerButton" mnemonicParsing="false" onAction="#handleCustomerDeleteButton" text="Delete Customer" />
                           </buttons>
                         </ButtonBar>

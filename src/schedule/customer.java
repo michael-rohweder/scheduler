@@ -54,6 +54,10 @@ public class customer {
     public int getZip() {
         return zip;
     }
+    
+    public void setId(int id){
+        this.Id=id;
+    }
 
     public void setName(String name) {
         this.name = name;
