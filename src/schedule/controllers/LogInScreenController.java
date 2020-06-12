@@ -58,7 +58,7 @@ public class LogInScreenController implements Initializable {
     String errorString;
     private Stage primaryStage;
     private static Optional<User> currentUser=null;
-    private List<User> authorizedUsers;
+    private static List<User> authorizedUsers;
     private boolean validLogin = false;
     private DataBase db;
     private Statement stmt;
@@ -96,6 +96,7 @@ public class LogInScreenController implements Initializable {
                 Stage mainStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 mainStage.setScene(mainScene);
                 mainStage.show();
+                this.logFile.closeLog();
             } catch (IOException ex) {
                 Logger.getLogger(LogInScreenController.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -106,6 +107,10 @@ public class LogInScreenController implements Initializable {
                 + "Password: " + passwordTF.getText() + "\n";
             logger.warning(logFile);
         } 
+    }
+    
+    public static List getUsers (){
+        return authorizedUsers;
     }
     
     @Override
@@ -136,7 +141,7 @@ public class LogInScreenController implements Initializable {
         
         
         currentLocale = Locale.getDefault();
-        //currentLocale = new Locale("fr", "FR");  //UNCOMMENT FOR FRENCH
+      //  currentLocale = new Locale("fr", "FR");  //UNCOMMENT FOR FRENCH
         currentStage = Schedule.getPrimaryStage();
         double layoutX;
         ResourceBundle bundle = ResourceBundle.getBundle("schedule/lang", currentLocale);
@@ -158,7 +163,8 @@ public class LogInScreenController implements Initializable {
         Platform.runLater(() -> {
             primaryStage = (Stage)messageBannerLabel.getScene().getWindow();
             primaryStage.setX((primScreenBounds.getWidth() - primaryStage.getWidth()) / 2);
-            primaryStage.setY((primScreenBounds.getHeight() - primaryStage.getHeight()) / 2);    
+            primaryStage.setY((primScreenBounds.getHeight() - primaryStage.getHeight()) / 2);  
+            primaryStage.setResizable(false);
             });
     }    
 }

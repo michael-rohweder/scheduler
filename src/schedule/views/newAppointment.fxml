@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="409.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="schedule.controllers.NewAppointmentController">
+   <children>
+      <Label layoutX="203.0" layoutY="14.0" text="New Appointment">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <DatePicker fx:id="appointmentDatePicker" layoutX="21.0" layoutY="62.0" promptText="Select Date" />
+      <ComboBox fx:id="customerComboBox" layoutX="217.0" layoutY="62.0" prefWidth="150.0" promptText="Select Customer" />
+      <ComboBox fx:id="contactComboBox" layoutX="398.0" layoutY="62.0" prefWidth="150.0" promptText="Select Contact" />
+      <TextField fx:id="appointmentTitle" layoutX="34.0" layoutY="113.0" promptText="Appointment Title" />
+      <TextArea fx:id="appointmentDescription" layoutX="200.0" layoutY="113.0" prefHeight="200.0" prefWidth="200.0" promptText="Appointment Description" />
+      <TextField fx:id="appointmentTypeTF" layoutX="426.0" layoutY="151.0" promptText="Type" />
+      <TextField fx:id="appointmentURLTF" layoutX="426.0" layoutY="188.0" promptText="URL" />
+      <ComboBox fx:id="startTimeComboBox" layoutX="33.0" layoutY="151.0" prefWidth="150.0" promptText="Start Time" />
+      <ComboBox fx:id="endTimeComboBox" layoutX="33.0" layoutY="188.0" prefWidth="150.0" promptText="End Time" />
+      <Button fx:id="saveButton" layoutX="266.0" layoutY="330.0" mnemonicParsing="false" onAction="#handleSaveButton" text="SAVE" />
+      <Button fx:id="cancelButton" layoutX="262.0" layoutY="366.0" mnemonicParsing="false" onAction="#handleCancelButton" text="Cancel" />
+      <ComboBox fx:id="locationComboBox" layoutX="426.0" layoutY="113.0" prefWidth="150.0" promptText="Location" />
+   </children>
+</AnchorPane>

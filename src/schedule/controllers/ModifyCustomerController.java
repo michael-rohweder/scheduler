@@ -72,7 +72,7 @@ public class ModifyCustomerController implements Initializable {
     private Label address2Label;
     private customer passedCustomer;
 
-    public ModifyCustomerController() throws SQLException {
+    public ModifyCustomerController() throws SQLException, IOException {
         this.customerDao = new CustomerDAO();
     }
 
@@ -153,21 +153,22 @@ public class ModifyCustomerController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         
         passedCustomer = MainController.getSelectedCustomer();
-        
-        customerNameTF.setText(passedCustomer.getName());
-        addressTF.setText(passedCustomer.getAddress());
-        address2TF.setText(passedCustomer.getAddress2());
-        cityTF.setText(passedCustomer.getCity());
-        countryTF.setText(passedCustomer.getCountry());
-        zipTF.setText(String.valueOf(passedCustomer.getZip()));
-        phoneTF.setText(passedCustomer.getPhone());
-        
+        if (passedCustomer != null) {
+            customerNameTF.setText(passedCustomer.getName());
+            addressTF.setText(passedCustomer.getAddress());
+            address2TF.setText(passedCustomer.getAddress2());
+            cityTF.setText(passedCustomer.getCity());
+            countryTF.setText(passedCustomer.getCountry());
+            zipTF.setText(String.valueOf(passedCustomer.getZip()));
+            phoneTF.setText(passedCustomer.getPhone());
+        }
         
         Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
         Platform.runLater(() -> {
             primaryStage = (Stage)zipTF.getScene().getWindow();
             primaryStage.setX((primScreenBounds.getWidth() - primaryStage.getWidth()) / 2);
-            primaryStage.setY((primScreenBounds.getHeight() - primaryStage.getHeight()) / 2);    
+            primaryStage.setY((primScreenBounds.getHeight() - primaryStage.getHeight()) / 2);   
+            primaryStage.setResizable(false);
             });    
     }    
 }

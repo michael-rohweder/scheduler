@@ -27,4 +27,8 @@ public class LogFile {
     public Logger getLogger(){
         return this.logger;
     }
+    
+    public void closeLog(){
+        fh.close();
+    }
 }

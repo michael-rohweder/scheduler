@@ -54,10 +54,6 @@ public class AddCustomerController implements Initializable {
     private TextField zipTF;
     @FXML
     private TextField phoneTF;
-  
-    public Stage primaryStage;
-    private User currentUser = LogInScreenController.getCurrentUser();
-    private CustomerDAO customerDao;
     @FXML
     private Label customerNameLabel;
     @FXML
@@ -75,6 +71,9 @@ public class AddCustomerController implements Initializable {
     
     LogFile logFile;
     Logger logger;
+    public Stage primaryStage;
+    private User currentUser = LogInScreenController.getCurrentUser();
+    private CustomerDAO customerDao;
 
     public AddCustomerController() throws SQLException, IOException {
         this.logFile = new LogFile();
@@ -93,6 +92,7 @@ public class AddCustomerController implements Initializable {
                     Stage mainStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                     mainStage.setScene(mainScene);
                     mainStage.show();
+                    this.logFile.closeLog();
                 } catch (IOException ex) {
                     Logger.getLogger(LogInScreenController.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -155,6 +155,7 @@ public class AddCustomerController implements Initializable {
             primaryStage = (Stage)zipTF.getScene().getWindow();
             primaryStage.setX((primScreenBounds.getWidth() - primaryStage.getWidth()) / 2);
             primaryStage.setY((primScreenBounds.getHeight() - primaryStage.getHeight()) / 2);    
+            primaryStage.setResizable(false);
             });    
     }    
 }
