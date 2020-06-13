@@ -1342,3 +1342,301 @@ UserName: test
 
 Jun 12, 2020 11:17:02 PM schedule.controllers.MainController handleExitButton
 INFO: User ID: 1(test) Exited the system.
+Jun 12, 2020 11:42:47 PM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 12, 2020 11:59:40 PM schedule.DAO.AppointmentDAO add
+INFO: User ID: 1(test) created a new appointment
+
+Jun 13, 2020 12:01:49 AM schedule.DAO.AppointmentDAO add
+INFO: User ID: 1(test) created a new appointment
+
+Jun 13, 2020 12:52:21 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 13, 2020 8:03:56 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 8:04:21 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 13, 2020 8:04:47 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 8:05:03 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 13, 2020 8:05:50 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 8:06:03 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 13, 2020 8:08:35 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 8:09:05 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 13, 2020 8:22:42 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 8:22:54 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 13, 2020 8:25:32 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 8:25:43 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 13, 2020 8:46:48 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 8:51:13 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 8:55:10 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 8:55:23 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 13, 2020 8:59:43 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 9:00:00 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 13, 2020 9:01:57 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 9:02:12 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 13, 2020 9:02:34 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 9:03:04 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 13, 2020 9:03:24 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 9:03:39 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 13, 2020 9:12:40 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 9:13:47 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 9:15:44 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 13, 2020 9:16:58 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 9:17:18 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 13, 2020 9:18:52 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 9:20:56 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 9:21:26 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 13, 2020 9:30:08 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 9:33:59 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 9:34:13 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 13, 2020 9:35:24 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 9:35:40 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 13, 2020 9:39:50 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 9:44:26 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 13, 2020 9:45:21 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 9:45:56 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 13, 2020 9:54:22 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 9:54:40 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 13, 2020 9:55:03 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 9:55:24 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 13, 2020 9:56:19 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 9:56:35 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 13, 2020 9:57:29 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 10:00:00 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 10:00:37 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 13, 2020 10:01:07 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 10:01:37 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 13, 2020 10:04:47 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 10:05:10 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 13, 2020 10:05:25 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 10:05:40 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 13, 2020 10:07:02 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 10:07:18 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 13, 2020 10:10:45 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 10:10:57 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 13, 2020 10:11:49 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 10:12:01 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 13, 2020 10:12:33 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 10:12:54 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 13, 2020 10:15:15 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 10:15:45 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 13, 2020 10:18:25 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 10:18:51 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 13, 2020 10:19:29 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 10:19:43 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 13, 2020 10:21:28 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 10:21:40 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 13, 2020 10:21:50 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 10:22:17 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 13, 2020 10:24:31 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 10:24:43 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 13, 2020 10:32:36 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 10:32:56 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 13, 2020 10:36:48 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 10:38:15 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 13, 2020 10:41:39 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 10:44:50 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 13, 2020 10:45:02 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 10:46:02 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 13, 2020 10:46:22 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 10:46:40 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 13, 2020 10:47:42 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 10:49:55 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 10:50:07 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 13, 2020 10:50:40 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 10:51:13 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 13, 2020 10:51:28 AM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 13, 2020 10:54:28 AM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.

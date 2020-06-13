@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.Year;
+import java.time.YearMonth;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -44,6 +46,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.OverrunStyle;
@@ -88,8 +91,9 @@ public class MainController implements Initializable {
     
     //MONTH VIEW FXML VARIABLES
     @FXML private GridPane monthGP;
-    @FXML Label monthLabel;
-
+    @FXML private ComboBox monthComboBox;
+    @FXML private ComboBox yearComboBox;
+    
     //DAY VIEW FXML VARIABLES
     @FXML private DatePicker dateLabel;
     @FXML private TableView dayViewTable;
@@ -126,6 +130,8 @@ public class MainController implements Initializable {
     SingleSelectionModel<Tab> viewTabSelect; 
     private LocalDate viewDayTabDate;
     private DateTimeFormatter dateFormatter;
+    private DateTimeFormatter monthFormatter;
+    private DateTimeFormatter yearFormatter;
     private DateTimeFormatter timeFormatter;
     private ObservableList<Appointment> appointments = FXCollections.observableArrayList();
     
@@ -223,6 +229,8 @@ public class MainController implements Initializable {
         refreshDayTab();
     }
     
+    
+    
     public void refreshDayTab(){
         ObservableList<Appointment> todaysAppointments = FXCollections.observableArrayList();
         todaysAppointments.clear();
@@ -244,6 +252,141 @@ public class MainController implements Initializable {
                 modifyAppointmentButton.setVisible(false);
                 deleteAppointmentButton.setVisible(false);
             }
+    }
+    
+    public void refreshMonth(){
+        LocalDateTime thisDate = LocalDateTime.now();
+        int selectedMonth = monthComboBox.getSelectionModel().getSelectedIndex() + 1;
+        int selectedYear = yearComboBox.getSelectionModel().getSelectedIndex() + 2010;
+
+        LocalDate selectedDate = LocalDate.of(selectedYear, selectedMonth, 1);
+        java.time.DayOfWeek dayWeek = selectedDate.getDayOfWeek();
+        System.out.println(dayWeek);
+        int dayOfWeek;
+        switch (dayWeek){
+            case SUNDAY:
+                dayOfWeek=0;
+                break;
+            case MONDAY:
+                dayOfWeek=1;
+                break;
+            case TUESDAY:
+                dayOfWeek=2;
+                break;
+            case WEDNESDAY:
+                dayOfWeek=3;
+                break;
+            case THURSDAY:
+                dayOfWeek=4;
+                break;
+            case FRIDAY:
+                dayOfWeek=5;
+                break;
+            case SATURDAY:
+                dayOfWeek=6;
+                break;
+            default:
+                dayOfWeek=0;
+                break;
+        }
+        
+        YearMonth lengthOfMonth = YearMonth.of(selectedYear, selectedMonth);
+        int numOfDays = lengthOfMonth.lengthOfMonth();
+
+        if (selectedMonth==2){
+            if(lengthOfMonth.isLeapYear()){
+                numOfDays+=1;
+            }
+        }
+        
+        //1st day of month
+        int day = 1;
+        boolean started=false;
+        
+        Node node = monthGP.getChildren().get(0);
+        monthGP.getChildren().clear();
+        monthGP.getChildren().add(0,node);
+       
+        for (int col=0; col < 7; col++){
+            Label dayName = new Label();
+            switch (col) {
+                case 0:
+                    dayName.setText("SUNDAY");
+                    break;
+                case 1:
+                    dayName.setText("MONDAY");
+                    break;
+                case 2:
+                    dayName.setText("TUESDAY");
+                    break;
+                case 3:
+                    dayName.setText("WEDNESDAY");
+                    break;
+                case 4:
+                    dayName.setText("THURSDAY");
+                    break;
+                case 5:
+                    dayName.setText("FRIDAY");
+                    break;
+                case 6:
+                    dayName.setText("SATURDAY");
+                    break;
+            }
+            monthGP.add(dayName, col, 0);
+        }
+        
+        for (int row = 1; row < 7; row++) 
+        {
+            for (int col = 0; col < 7; col++)
+            {
+                //Find where the first of the month falls on
+                if (!started){
+                    started=true;
+                    col=dayOfWeek;
+                }
+                if (day <= numOfDays){
+                    //Day number label - Formatted to upper right of gridPane cell
+                    Label label = new Label();
+                    Label appointmentsLabel = new Label();
+                    label.setText(String.valueOf(day));
+                    label.setFont(Font.font(null, FontWeight.BOLD, 25));
+                    label.setPadding(new Insets(2,5,0,0)); //top, right, bottom, left
+                    //Determine which day the gridPane cell represents and format it
+                    LocalDate gridDate = LocalDate.of(selectedYear, selectedMonth, day);
+                    //LocalDateTime gridDate = LocalDateTime.of(thisDate.getYear(), thisDate.getMonth(), day, 10,10,30);
+                    String gridDateString = dateFormatter.format(gridDate);
+                    monthGP.setHalignment(label, HPos.RIGHT);
+                    monthGP.setValignment(label, VPos.TOP);
+                    monthGP.add(label, col, row);
+                    appointmentsLabel.setOnMouseClicked(event -> toDayView(gridDate));
+
+                    String eventString = "";
+                    String thisDateString = dateFormatter.format(thisDate);
+
+                    for (Appointment a : appointment){
+
+                        String apptDate = dateFormatter.format(a.getStart());
+                        String apptTime = timeFormatter.format(a.getStart());
+
+                        //Is the current appointment on today? - Add it to the grid
+                        if (apptDate.equals(gridDateString)){
+                            eventString = eventString + "\n" + a.getTitle();
+                        }
+
+                        //Is this grid today? - Set the text to red
+                        if (gridDateString.equals(thisDateString)) {
+                            label.setTextFill(Color.web("#FF0000"));
+                        }
+                    }                    
+                    appointmentsLabel.setText(eventString);
+                    appointmentsLabel.setPadding(new Insets(0,0,0,5));
+                    appointmentsLabel.setTextOverrun(OverrunStyle.WORD_ELLIPSIS);
+                    monthGP.setValignment(appointmentsLabel, VPos.BOTTOM);
+                    monthGP.add(appointmentsLabel, col, row);
+                    day++;
+                }
+            }
+        }
     }
     
     @Override
@@ -285,10 +428,13 @@ public class MainController implements Initializable {
              //Get todays date
             LocalDateTime thisDate = LocalDateTime.now();
             viewDayTabDate = thisDate.toLocalDate();
+            
             //Format date as Month-Day-Year
             //Format time as Hours:Minutes
             dateFormatter = DateTimeFormatter.ofPattern("MM-dd-yyyy", Locale.ENGLISH);
             timeFormatter = DateTimeFormatter.ofPattern("HH:mm", Locale.ENGLISH);
+            monthFormatter = DateTimeFormatter.ofPattern("MM", Locale.ENGLISH);
+            yearFormatter = DateTimeFormatter.ofPattern("yyyy", Locale.ENGLISH);
             
             Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
 
@@ -297,7 +443,6 @@ public class MainController implements Initializable {
                 mainStage = (Stage) schedulePane.getScene().getWindow();
                 mainStage.setX((primScreenBounds.getWidth() - mainStage.getWidth()) / 2);
                 mainStage.setY((primScreenBounds.getHeight() - mainStage.getHeight()) / 2);
-                monthLabel.setLayoutX((mainStage.getWidth() - monthLabel.getWidth()) / 2);
                 mainStage.setOnCloseRequest(event -> handleExitButton(new ActionEvent()));
                 mainStage.setResizable(false);
             });
@@ -329,87 +474,48 @@ public class MainController implements Initializable {
             contactCol.setCellValueFactory(new PropertyValueFactory<>("contactName"));
             
             dayViewTable.setItems(todaysAppointments);
-
         //**************************
         //Month View Specific Setup
         //**************************
-            //Get current month/Year and set the label
-            Calendar cal = Calendar.getInstance();
-            String month = new SimpleDateFormat("MMMMMMMMM YYYY").format(cal.getTime());
-            monthLabel.setText(month);
-
-            //Set the calendar to the first day of the current month/year
-            cal.set(Calendar.MONTH, Calendar.MONTH);
-            cal.set(Calendar.DAY_OF_MONTH, 1);
-            cal.set(Calendar.YEAR,Calendar.YEAR);
-
-            Date date = cal.getTime();
-
-            cal.setTime(date);
-
-            //Determine what day of the week the 1st falls on
-            int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
-            //Number of days in current month
-            int numOfDays = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-            
-            //1st day of month
-            int day = 1;
-            boolean started=false;
-            for (int row = 1; row < 6; row++) 
-            {
-                for (int col = 0; col < 7; col++)
-                {
-                    
-                    //Find where the first of the month falls on
-                    while (col != dayOfWeek && !started)
-                    {
-                        started=true;
-                        col++;
-                    }   
-                    if (day < numOfDays){
-                        //Day number label - Formatted to upper right of gridPane cell
-                        Label label = new Label();
-                        Label appointmentsLabel = new Label();
-                        label.setText(String.valueOf(day));
-                        label.setFont(Font.font(null, FontWeight.BOLD, 25));
-                        label.setPadding(new Insets(2,5,0,0)); //top, right, bottom, left
-                        //Determine which day the gridPane cell represents and format it
-                        LocalDate gridDate = LocalDate.of(thisDate.getYear(), thisDate.getMonth(), day);
-                        //LocalDateTime gridDate = LocalDateTime.of(thisDate.getYear(), thisDate.getMonth(), day, 10,10,30);
-                        String gridDateString = dateFormatter.format(gridDate);
-                        monthGP.setHalignment(label, HPos.RIGHT);
-                        monthGP.setValignment(label, VPos.TOP);
-                        monthGP.add(label, col, row);
-                        appointmentsLabel.setOnMouseClicked(event -> toDayView(gridDate));
-
-                        String eventString = "";
-                        String thisDateString = dateFormatter.format(thisDate);
-
-                        for (Appointment a : appointment){
-
-                            String apptDate = dateFormatter.format(a.getStart());
-                            String apptTime = timeFormatter.format(a.getStart());
-
-                            //Is the current appointment on today? - Add it to the grid
-                            if (apptDate.equals(gridDateString)){
-                                eventString = eventString + "\n" + a.getTitle();
-                            }
-                            
-                            //Is this grid today? - Set the text to red
-                            if (gridDateString.equals(thisDateString)) {
-                                label.setTextFill(Color.web("#FF0000"));
-                            }
-                        }                    
-                        appointmentsLabel.setText(eventString);
-                        appointmentsLabel.setPadding(new Insets(0,0,0,5));
-                        appointmentsLabel.setTextOverrun(OverrunStyle.WORD_ELLIPSIS);
-                        monthGP.setValignment(appointmentsLabel, VPos.BOTTOM);
-                        monthGP.add(appointmentsLabel, col, row);
-                        day++;
-                    }
-                }
-            }
         
+       
+            Calendar cal = Calendar.getInstance();
+            
+            List<String> months = new ArrayList<>();
+            List<Integer> years = new ArrayList<>();
+            months.add("January");
+            months.add("February");
+            months.add("March");
+            months.add("April");
+            months.add("May");
+            months.add("June");
+            months.add("July");
+            months.add("August");
+            months.add("September");
+            months.add("October");
+            months.add("November");
+            months.add("December");
+            months.forEach(m -> monthComboBox.getItems().add(m));
+            
+            for (int year = 2010; year <= 2050; year++){
+                years.add(year);
+            }
+            years.forEach(y -> yearComboBox.getItems().add(y));
+            
+            String nowMonth = monthFormatter.format(viewDayTabDate);
+            String nowYear = yearFormatter.format(viewDayTabDate);
+            
+            int currentMonth = Integer.parseInt(nowMonth) - 1;
+            int currentYear = Integer.parseInt(nowYear) - 2010;
+            
+            monthComboBox.getSelectionModel().select(currentMonth);
+            yearComboBox.getSelectionModel().select(currentYear);
+            
+            
+            monthComboBox.valueProperty().addListener(c -> refreshMonth());
+            yearComboBox.valueProperty().addListener(c -> refreshMonth());
+            
+            refreshMonth();
             
         //******************
         //Customer Tab Setup
