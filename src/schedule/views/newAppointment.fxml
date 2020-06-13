@@ -21,12 +21,12 @@
       <ComboBox fx:id="contactComboBox" layoutX="398.0" layoutY="62.0" prefWidth="150.0" promptText="Select Contact" />
       <TextField fx:id="appointmentTitle" layoutX="34.0" layoutY="113.0" promptText="Appointment Title" />
       <TextArea fx:id="appointmentDescription" layoutX="200.0" layoutY="113.0" prefHeight="200.0" prefWidth="200.0" promptText="Appointment Description" />
-      <TextField fx:id="appointmentTypeTF" layoutX="426.0" layoutY="151.0" promptText="Type" />
       <TextField fx:id="appointmentURLTF" layoutX="426.0" layoutY="188.0" promptText="URL" />
       <ComboBox fx:id="startTimeComboBox" layoutX="33.0" layoutY="151.0" prefWidth="150.0" promptText="Start Time" />
       <ComboBox fx:id="endTimeComboBox" layoutX="33.0" layoutY="188.0" prefWidth="150.0" promptText="End Time" />
       <Button fx:id="saveButton" layoutX="266.0" layoutY="330.0" mnemonicParsing="false" onAction="#handleSaveButton" text="SAVE" />
       <Button fx:id="cancelButton" layoutX="262.0" layoutY="366.0" mnemonicParsing="false" onAction="#handleCancelButton" text="Cancel" />
       <ComboBox fx:id="locationComboBox" layoutX="426.0" layoutY="113.0" prefWidth="150.0" promptText="Location" />
+      <ComboBox fx:id="typeComboBox" layoutX="426.0" layoutY="151.0" prefWidth="150.0" promptText="Type" />
    </children>
 </AnchorPane>

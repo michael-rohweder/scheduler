@@ -50,9 +50,8 @@ public class LogInScreenController implements Initializable {
     @FXML
     private Label messageBannerLabel;
     @FXML
-    private Label userNameLabel;
-    @FXML
-    private Label passwordLabel;
+    private Label employeeLoginLabel;
+    
     Stage currentStage; 
     Locale currentLocale;
     String errorString;
@@ -90,16 +89,8 @@ public class LogInScreenController implements Initializable {
                                          .filter(s -> s.getUserName().equals(uNameTF.getText()))
                                          .findFirst();
             messageBannerLabel.setVisible(false);
-            try {
-                Parent mainParent = FXMLLoader.load(getClass().getClassLoader().getResource("schedule/views/main.fxml"));
-                Scene mainScene = new Scene(mainParent);
-                Stage mainStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                mainStage.setScene(mainScene);
-                mainStage.show();
-                this.logFile.closeLog();
-            } catch (IOException ex) {
-                Logger.getLogger(LogInScreenController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            loadScene("main.fxml");
+            this.logFile.closeLog();
         } else {
             messageBannerLabel.setVisible(true);
             String logFile = "INVALID LOG IN ATTEMPT:\n"
@@ -108,6 +99,19 @@ public class LogInScreenController implements Initializable {
             logger.warning(logFile);
         } 
     }
+    
+    public void loadScene(String sceneName){
+        sceneName = "schedule/views/" + sceneName;
+         try {
+            Parent mainParent = FXMLLoader.load(getClass().getClassLoader().getResource(sceneName));
+            Scene mainScene = new Scene(mainParent);
+            primaryStage.setScene(mainScene);
+            primaryStage.show();
+        } catch (IOException ex) {
+            Logger.getLogger(LogInScreenController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     
     public static List getUsers (){
         return authorizedUsers;
@@ -141,19 +145,16 @@ public class LogInScreenController implements Initializable {
         
         
         currentLocale = Locale.getDefault();
-      //  currentLocale = new Locale("fr", "FR");  //UNCOMMENT FOR FRENCH
+        //currentLocale = new Locale("fr", "FR");  //UNCOMMENT FOR FRENCH
         currentStage = Schedule.getPrimaryStage();
-        double layoutX;
         ResourceBundle bundle = ResourceBundle.getBundle("schedule/lang", currentLocale);
         
-        userNameLabel.setText(bundle.getString("login"));
-        passwordLabel.setText(bundle.getString("password"));
+        uNameTF.setPromptText(bundle.getString("login"));
+        passwordTF.setPromptText(bundle.getString("password"));
         logInButton.setText(bundle.getString("buttonText"));
         
-        layoutX = userNameLabel.getLayoutX();
-        uNameTF.setLayoutX(layoutX);
-        passwordTF.setLayoutX(layoutX);
-        passwordLabel.setLayoutX(layoutX);
+        employeeLoginLabel.setText(bundle.getString("employeeText"));
+        
         errorString = bundle.getString("errorMessage");
         messageBannerLabel.setText(errorString);
         messageBannerLabel.setStyle("-fx-border-color:red; -fx-background-color: white;");

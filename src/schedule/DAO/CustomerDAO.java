@@ -184,8 +184,20 @@ public class CustomerDAO implements DAO<customer> {
 
     @Override
     public customer get(int Id) {
-        return customers.get(Id);
+        customer returnedCustomer=null;
+        try {
+            String query = "SELECT c.customerId, c.customerName, a.address, a.address2, a.postalCode, a.phone, cty.city, ctry.country FROM customer c INNER JOIN address a ON a.addressId = c.addressId INNER JOIN city cty ON cty.cityId = a.cityId INNER JOIN country ctry ON ctry.countryId = cty.countryId WHERE active=1 AND c.customerId=" + Id + ";";
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                returnedCustomer = new customer(rs.getInt("c.customerId"), rs.getString("c.customerName"), rs.getString("a.address"), rs.getString("a.address2"), rs.getString("cty.city"), rs.getString("ctry.country"), rs.getInt("a.postalCode"), rs.getString("a.phone"));
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return returnedCustomer;
     }
+    
     public int getLastID(String table, String search, String IDname, String field) throws SQLException{
         String query = "Select * from " + table + " where " + field + "='" + search + "';";
         ResultSet rs = stmt.executeQuery(query);

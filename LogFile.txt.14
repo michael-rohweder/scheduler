@@ -1,0 +1,49 @@
+Jun 12, 2020 8:06:28 PM schedule.DAO.AppointmentDAO add
+INFO: User ID: 1(test) created a new appointment
+
+Jun 12, 2020 8:08:12 PM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 12, 2020 8:10:12 PM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 12, 2020 8:12:53 PM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 12, 2020 8:13:52 PM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 12, 2020 9:20:55 PM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 12, 2020 9:24:01 PM schedule.controllers.LogInScreenController handleLogInButton
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 12, 2020 9:39:31 PM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 12, 2020 9:41:38 PM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 12, 2020 9:58:17 PM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 12, 2020 10:10:29 PM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 12, 2020 10:12:26 PM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 12, 2020 10:16:36 PM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 12, 2020 10:20:50 PM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 12, 2020 10:26:02 PM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 12, 2020 10:32:36 PM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 12, 2020 10:36:22 PM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 12, 2020 10:39:21 PM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 12, 2020 10:43:10 PM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 12, 2020 10:51:20 PM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 12, 2020 10:54:26 PM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
+Jun 12, 2020 10:55:42 PM schedule.controllers.MainController handleExitButton
+INFO: User ID: 1(test) Exited the system.
