@@ -94,6 +94,14 @@ public class MainController implements Initializable {
     @FXML private ComboBox monthComboBox;
     @FXML private ComboBox yearComboBox;
     
+    //WEEK VIEW FXML VARIABLE
+    @FXML private GridPane weekGP;
+    @FXML private Label weekRangeLabel;
+    @FXML private Button previousWeekButton;
+    @FXML private Button nextWeekButton;
+    LocalDate startOfWeek;
+    LocalDate endOfWeek;
+    
     //DAY VIEW FXML VARIABLES
     @FXML private DatePicker dateLabel;
     @FXML private TableView dayViewTable;
@@ -150,6 +158,108 @@ public class MainController implements Initializable {
 
     public static customer getSelectedCustomer(){
         return selectedCustomer;
+    }
+    
+    public void handlePreviousWeekButton(ActionEvent event){
+        startOfWeek = startOfWeek.minusDays(7);
+        endOfWeek = endOfWeek.minusDays(7);
+        
+        String weekRange = dateFormatter.format(startOfWeek) + " - " + dateFormatter.format(endOfWeek);
+        
+        weekRangeLabel.setText(weekRange);
+        updateWeekView();
+    }
+    
+    public void updateWeekView(){
+        Node node = weekGP.getChildren().get(0);
+        weekGP.getChildren().clear();
+        weekGP.getChildren().add(0,node);
+        
+        for (int day = 0; day < 7; day++){
+            int row=2;
+            for (Appointment a : appointment)
+            {
+                String apptDate = dateFormatter.format(a.getStart());
+                LocalDate passDate = startOfWeek.plusDays(day);
+                
+                String weekDate = dateFormatter.format(startOfWeek.plusDays(day));
+                //Is the current appointment on today? - Add it to the grid
+                if (apptDate.equals(weekDate)){
+                    Label eventLabel = new Label();
+                    
+                    eventLabel.setOnMouseClicked(event -> toDayView(passDate));
+
+                    eventLabel.setText(a.getTitle());
+                    eventLabel.setFont(Font.font(null,FontWeight.NORMAL, 15));
+                    weekGP.setHalignment(eventLabel, HPos.CENTER);
+                    weekGP.setValignment(eventLabel, VPos.CENTER);
+                    row++;
+                    weekGP.add(eventLabel, day, row);
+                }
+            }              
+        }
+        
+        String weekRange = dateFormatter.format(startOfWeek) + " - " + dateFormatter.format(endOfWeek);
+        
+        weekRangeLabel.setText(weekRange);
+        weekRangeLabel.setFont(Font.font(null, FontWeight.BOLD, 25));
+        
+        for (int col=0; col < 7; col++){
+            Label dayName = new Label();
+            switch (col) {
+                case 0:
+                    dayName.setText("SUNDAY");
+                    break;
+                case 1:
+                    dayName.setText("MONDAY");
+                    break;
+                case 2:
+                    dayName.setText("TUESDAY");
+                    break;
+                case 3:
+                    dayName.setText("WEDNESDAY");
+                    break;
+                case 4:
+                    dayName.setText("THURSDAY");
+                    break;
+                case 5:
+                    dayName.setText("FRIDAY");
+                    break;
+                case 6:
+                    dayName.setText("SATURDAY");
+                    break;
+            }
+            dayName.setFont(Font.font(null, FontWeight.BOLD, 25));
+            LocalDate passDate = startOfWeek.plusDays(col);
+
+            dayName.setOnMouseClicked(event -> toDayView(passDate));
+
+            weekGP.setHalignment(dayName, HPos.CENTER);
+            weekGP.setValignment(dayName, VPos.CENTER);
+            weekGP.add(dayName, col, 1);
+        }
+        for (int col = 0; col < 7; col++){
+            Label date = new Label();
+            date.setText(dateFormatter.format(startOfWeek.plusDays(col)));
+            date.setFont(Font.font(null,FontWeight.BOLD, 15));
+            LocalDate passDate = startOfWeek.plusDays(col);
+
+            date.setOnMouseClicked(event -> toDayView(passDate));
+            weekGP.setHalignment(date, HPos.CENTER);
+            weekGP.setValignment(date, VPos.CENTER);
+            weekGP.add(date, col, 0);
+        }
+    }
+    
+    public void handleNextWeekButton(ActionEvent event){
+        startOfWeek = startOfWeek.plusDays(7);
+        endOfWeek = endOfWeek.plusDays(7);
+        
+        String weekRange = dateFormatter.format(startOfWeek) + " - " + dateFormatter.format(endOfWeek);
+        
+        weekRangeLabel.setText(weekRange);
+        
+        updateWeekView();
     }
     
     public void handleModifyAppointmentButton(ActionEvent event){
@@ -258,10 +368,9 @@ public class MainController implements Initializable {
         LocalDateTime thisDate = LocalDateTime.now();
         int selectedMonth = monthComboBox.getSelectionModel().getSelectedIndex() + 1;
         int selectedYear = yearComboBox.getSelectionModel().getSelectedIndex() + 2010;
-
+        
         LocalDate selectedDate = LocalDate.of(selectedYear, selectedMonth, 1);
         java.time.DayOfWeek dayWeek = selectedDate.getDayOfWeek();
-        System.out.println(dayWeek);
         int dayOfWeek;
         switch (dayWeek){
             case SUNDAY:
@@ -332,6 +441,9 @@ public class MainController implements Initializable {
                     dayName.setText("SATURDAY");
                     break;
             }
+            dayName.setFont(Font.font(null, FontWeight.BOLD, 25));
+            monthGP.setHalignment(dayName, HPos.CENTER);
+            monthGP.setValignment(dayName, VPos.CENTER);
             monthGP.add(dayName, col, 0);
         }
         
@@ -345,16 +457,20 @@ public class MainController implements Initializable {
                     col=dayOfWeek;
                 }
                 if (day <= numOfDays){
+                    
                     //Day number label - Formatted to upper right of gridPane cell
                     Label label = new Label();
                     Label appointmentsLabel = new Label();
                     label.setText(String.valueOf(day));
                     label.setFont(Font.font(null, FontWeight.BOLD, 25));
                     label.setPadding(new Insets(2,5,0,0)); //top, right, bottom, left
+                    
                     //Determine which day the gridPane cell represents and format it
                     LocalDate gridDate = LocalDate.of(selectedYear, selectedMonth, day);
+                    
                     //LocalDateTime gridDate = LocalDateTime.of(thisDate.getYear(), thisDate.getMonth(), day, 10,10,30);
                     String gridDateString = dateFormatter.format(gridDate);
+                    
                     monthGP.setHalignment(label, HPos.RIGHT);
                     monthGP.setValignment(label, VPos.TOP);
                     monthGP.add(label, col, row);
@@ -474,13 +590,10 @@ public class MainController implements Initializable {
             contactCol.setCellValueFactory(new PropertyValueFactory<>("contactName"));
             
             dayViewTable.setItems(todaysAppointments);
+            
         //**************************
         //Month View Specific Setup
         //**************************
-        
-       
-            Calendar cal = Calendar.getInstance();
-            
             List<String> months = new ArrayList<>();
             List<Integer> years = new ArrayList<>();
             months.add("January");
@@ -511,11 +624,47 @@ public class MainController implements Initializable {
             monthComboBox.getSelectionModel().select(currentMonth);
             yearComboBox.getSelectionModel().select(currentYear);
             
-            
             monthComboBox.valueProperty().addListener(c -> refreshMonth());
             yearComboBox.valueProperty().addListener(c -> refreshMonth());
             
             refreshMonth();
+
+        //***************
+        //WEEK VIEW SETUP
+        //***************
+        LocalDate today = LocalDate.now();
+        java.time.DayOfWeek todaysDay = today.getDayOfWeek();
+        int dayWeek=0;
+        switch (todaysDay){
+            case SUNDAY:
+                dayWeek=1;
+                break;
+            case MONDAY:
+                dayWeek=2;
+                break;
+            case TUESDAY:
+                dayWeek=3;
+                break;
+            case WEDNESDAY:
+                dayWeek=4;
+                break;
+            case THURSDAY:
+                dayWeek=5;
+                break;
+            case FRIDAY:
+                dayWeek=6;
+                break;
+            case SATURDAY:
+                dayWeek=7;
+                break;
+        }
+        int diff = dayWeek - 1;
+        
+        
+        startOfWeek = today.minusDays(diff);
+        endOfWeek = startOfWeek.plusDays(6);
+        updateWeekView();
+        
             
         //******************
         //Customer Tab Setup
