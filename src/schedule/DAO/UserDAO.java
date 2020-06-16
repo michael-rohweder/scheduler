@@ -23,15 +23,11 @@ public class UserDAO implements DAO<User> {
     private ObservableList<User> users = FXCollections.observableArrayList();
     private DataBase db = new DataBase();
     private final Statement stmt;
-    private LogFile logFile;
-    private Logger logger;
     User currentUser = LogInScreenController.getCurrentUser();
     
     
     public UserDAO() throws SQLException, IOException {
         this.stmt = db.createConnection();
-        this.logFile = new LogFile();
-        logger = logFile.getLogger();
     }
     
     @Override
@@ -66,8 +62,10 @@ public class UserDAO implements DAO<User> {
                         
             String logString = "User ID: " + currentUser.getUserId() + "(" + currentUser.getUserName() + ") created a new user\n"
                     + "User Name: "+ t.getUserName() + ")\n";
-            logger.info(logString);
+            new LogFile(logString);
         } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -85,8 +83,10 @@ public class UserDAO implements DAO<User> {
             stmt.executeUpdate(query);
             String logString = "User ID: " + currentUser.getUserId() + "(" + currentUser.getUserName() + ") updated a user\n"
                 + "User ID: " + t.getUserId() + "(" + t.getUserName()+ ")\n";
-            logger.info(logString);
+            new LogFile(logString);
         } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -98,8 +98,10 @@ public class UserDAO implements DAO<User> {
             stmt.executeUpdate(query);
             String logString = "User ID: " + currentUser.getUserId() + "(" + currentUser.getUserName() + ") deleted a user\n"
                 + "User ID: " + t.getUserId() + "(" + t.getUserName() + ")\n";
-            logger.info(logString);
+            new LogFile(logString);
         } catch (SQLException ex) {
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -130,15 +132,6 @@ public class UserDAO implements DAO<User> {
         return returnID;
     } 
     
-//    public int getLastID(String table, String search, String IDname) throws SQLException{
-//        String query = "Select * from " + table + " where " + table + "='" + search + "';";
-//        ResultSet rs = stmt.executeQuery(query);
-//        int returnID=-1;
-//        while (rs.next()) {
-//            returnID = rs.getInt(IDname);
-//        }
-//        return returnID;
-//    }
     public int getAddressID(String address1, String address2) throws SQLException{
         String query = "Select * from address where address='" + address1 + "' && address2='" + address2 +"';";
         ResultSet rs = stmt.executeQuery(query);

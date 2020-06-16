@@ -33,6 +33,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -59,6 +60,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -94,7 +97,7 @@ public class MainController implements Initializable {
     @FXML private ComboBox monthComboBox;
     @FXML private ComboBox yearComboBox;
     
-    //WEEK VIEW FXML VARIABLE
+    //WEEK VIEW VARIABLEs
     @FXML private GridPane weekGP;
     @FXML private Label weekRangeLabel;
     @FXML private Button previousWeekButton;
@@ -102,7 +105,7 @@ public class MainController implements Initializable {
     LocalDate startOfWeek;
     LocalDate endOfWeek;
     
-    //DAY VIEW FXML VARIABLES
+    //DAY VIEW VARIABLES
     @FXML private DatePicker dateLabel;
     @FXML private TableView dayViewTable;
     @FXML private TableColumn<Appointment, String> customerNameCol;
@@ -116,6 +119,7 @@ public class MainController implements Initializable {
     @FXML private TableColumn<Appointment, String> contactCol;
     @FXML private Button modifyAppointmentButton;
     @FXML private Button deleteAppointmentButton;
+    private ObservableList<Appointment> todaysAppointments;
     
     //GENERAL MAIN FXML VARIABLES
     @FXML Button newAppointmentButton;
@@ -128,8 +132,7 @@ public class MainController implements Initializable {
     private User currentUser = LogInScreenController.getCurrentUser();
     private final CustomerDAO customerDao;
     private static customer selectedCustomer;
-    LogFile logfile;
-    Logger logger;
+    private static Appointment selectedAppointment;
     private Stage mainStage;
     private static int mainTabSelection = -1;
     public static ObservableList<customer> customerList = FXCollections.observableArrayList();
@@ -146,16 +149,17 @@ public class MainController implements Initializable {
     //DEFAULT CONSTRUCTOR
     public MainController() throws SQLException, IOException {
         customerDao = new CustomerDAO();
-        logfile = new LogFile();
-        logger = logfile.getLogger();
         appointmentDAO = new AppointmentDAO();
     }
-    
     
     public static ObservableList getCustomerList(){
         return customerList;
     }
 
+    public static Appointment getSelectedAppointment(){
+        return selectedAppointment;
+    }
+    
     public static customer getSelectedCustomer(){
         return selectedCustomer;
     }
@@ -171,6 +175,7 @@ public class MainController implements Initializable {
     }
     
     public void updateWeekView(){
+        //appointment = appointmentDAO.getAll();
         Node node = weekGP.getChildren().get(0);
         weekGP.getChildren().clear();
         weekGP.getChildren().add(0,node);
@@ -263,18 +268,30 @@ public class MainController implements Initializable {
     }
     
     public void handleModifyAppointmentButton(ActionEvent event){
-        
+        selectedAppointment = (Appointment) dayViewTable.getSelectionModel().getSelectedItem();
+        if (selectedAppointment != null) {
+            loadScene("modifyAppointment.fxml");
+        }
     }
     
     public void handleDeleteAppointmentButton(ActionEvent event){
-        
+        selectedAppointment = (Appointment) dayViewTable.getSelectionModel().getSelectedItem();
+        appointmentDAO.delete(selectedAppointment);
+        todaysAppointments.remove(selectedAppointment);
+        appointments.remove(selectedAppointment);
+        appointment.remove(selectedAppointment);
+        refreshMonth();
+        updateWeekView();
     }
     
-    public void handleCustomerDeleteButton(ActionEvent event) throws SQLException{
+    public void handleCustomerDeleteButton(ActionEvent event) throws SQLException, IOException{
         selectedCustomer = (customer) customerTV.getSelectionModel().getSelectedItem();
-        
+        appointmentDAO.deleteCustomer(selectedCustomer);
         customerDao.delete(selectedCustomer);
         customerList.remove(selectedCustomer);
+        refreshMonth();
+        updateWeekView();
+        refreshDayTab();
     }
     public void handleNewAppointmentButton () {
         loadScene("newAppointment.fxml");
@@ -314,10 +331,9 @@ public class MainController implements Initializable {
        loadScene("addCustomer.fxml");
     }
     
-    public void handleExitButton(ActionEvent event) {
-        String logFile = "User ID: " + currentUser.getUserId() + "(" + currentUser.getUserName() + ") Exited the system.";
-        logger.info(logFile);
-        this.logfile.closeLog();
+    public void handleExitButton(ActionEvent event) throws IOException {
+        String logFile = "User ID: " + currentUser.getUserId() + "(" + currentUser.getUserName() + ") Exited the system.\n";
+        new LogFile(logFile);
         System.exit(0);
     }
     
@@ -339,10 +355,9 @@ public class MainController implements Initializable {
         refreshDayTab();
     }
     
-    
-    
     public void refreshDayTab(){
-        ObservableList<Appointment> todaysAppointments = FXCollections.observableArrayList();
+        todaysAppointments = FXCollections.observableArrayList();
+    //    appointment = appointmentDAO.getAll();
         todaysAppointments.clear();
         appointment.forEach(a -> {
             String apptDate = dateFormatter.format(a.getStart());
@@ -365,6 +380,7 @@ public class MainController implements Initializable {
     }
     
     public void refreshMonth(){
+       // appointment = appointmentDAO.getAll();
         LocalDateTime thisDate = LocalDateTime.now();
         int selectedMonth = monthComboBox.getSelectionModel().getSelectedIndex() + 1;
         int selectedYear = yearComboBox.getSelectionModel().getSelectedIndex() + 2010;
@@ -511,62 +527,66 @@ public class MainController implements Initializable {
         // GENERAL SETUP
         //**************
             //Change listener for current selected tab
-            mainTabPane.getSelectionModel().selectedItemProperty().addListener((ob, oldTab, newTab) -> {
-                mainTabSelection = mainTabPane.getSelectionModel().getSelectedIndex();
-            });
+                mainTabPane.getSelectionModel().selectedItemProperty().addListener((ob, oldTab, newTab) -> {
+                    mainTabSelection = mainTabPane.getSelectionModel().getSelectedIndex();
+                });
 
             //Set tab to previously selected tab on load
-            SingleSelectionModel<Tab> mainTab = mainTabPane.getSelectionModel();
-            mainTab.select(mainTabSelection);
+                SingleSelectionModel<Tab> mainTab = mainTabPane.getSelectionModel();
+                mainTab.select(mainTabSelection);
 
             //Set schedule view to monthly by default
-            viewTabSelect = schedulePane.getSelectionModel();
-            viewTabSelect.select(2);
-            
-            schedulePane.setOnMouseClicked(event -> refreshDayTab());
-            
-            int selectedTab = viewTabSelect.getSelectedIndex();
-            
-            if (selectedTab==0) {
-                modifyAppointmentButton.setVisible(true);
-                deleteAppointmentButton.setVisible(true);
-            } else {
-                modifyAppointmentButton.setVisible(false);
-                deleteAppointmentButton.setVisible(false);
-            }
-           
+                viewTabSelect = schedulePane.getSelectionModel();
+                viewTabSelect.select(2);
+
+                schedulePane.setOnMouseClicked(event -> refreshDayTab());
+
+                int selectedTab = viewTabSelect.getSelectedIndex();
+
+                if (selectedTab==0) {
+                    modifyAppointmentButton.setVisible(true);
+                    deleteAppointmentButton.setVisible(true);
+                } else {
+                    modifyAppointmentButton.setVisible(false);
+                    deleteAppointmentButton.setVisible(false);
+                }
             
             //Load customers from DB
-            customerList = customerDao.getAll();
+                customerList = customerDao.getAll();
             //Load appointments from DB 
-            appointment = appointmentDAO.getAll();
+                appointment = appointmentDAO.getAll();
 
              //Get todays date
-            LocalDateTime thisDate = LocalDateTime.now();
-            viewDayTabDate = thisDate.toLocalDate();
+                LocalDateTime thisDate = LocalDateTime.now();
+                viewDayTabDate = thisDate.toLocalDate();
             
             //Format date as Month-Day-Year
             //Format time as Hours:Minutes
-            dateFormatter = DateTimeFormatter.ofPattern("MM-dd-yyyy", Locale.ENGLISH);
-            timeFormatter = DateTimeFormatter.ofPattern("HH:mm", Locale.ENGLISH);
-            monthFormatter = DateTimeFormatter.ofPattern("MM", Locale.ENGLISH);
-            yearFormatter = DateTimeFormatter.ofPattern("yyyy", Locale.ENGLISH);
-            
+                dateFormatter = DateTimeFormatter.ofPattern("MM-dd-yyyy", Locale.ENGLISH);
+                timeFormatter = DateTimeFormatter.ofPattern("h:mm a", Locale.ENGLISH);
+                monthFormatter = DateTimeFormatter.ofPattern("MM", Locale.ENGLISH);
+                yearFormatter = DateTimeFormatter.ofPattern("yyyy", Locale.ENGLISH);
+
             Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
 
             //delay execution until after initialized - centers window in the screen.  Using lambda to make code more readable and not require anon inner class
-            Platform.runLater(() -> {
-                mainStage = (Stage) schedulePane.getScene().getWindow();
-                mainStage.setX((primScreenBounds.getWidth() - mainStage.getWidth()) / 2);
-                mainStage.setY((primScreenBounds.getHeight() - mainStage.getHeight()) / 2);
-                mainStage.setOnCloseRequest(event -> handleExitButton(new ActionEvent()));
-                mainStage.setResizable(false);
-            });
+                Platform.runLater(() -> {
+                    mainStage = (Stage) schedulePane.getScene().getWindow();
+                    mainStage.setX((primScreenBounds.getWidth() - mainStage.getWidth()) / 2);
+                    mainStage.setY((primScreenBounds.getHeight() - mainStage.getHeight()) / 2);
+                    mainStage.setOnCloseRequest(event -> {
+                        try {
+                            handleExitButton(new ActionEvent());
+                        } catch (IOException ex) {
+                            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    });
+                    mainStage.setResizable(false);
+                });
             
         //***********************
         //Day View Specific Setup
         //***********************
-            //appointments = appointmentDAO.getAll();
             ObservableList<Appointment> todaysAppointments = FXCollections.observableArrayList();
             appointment.forEach(a -> {
                 String apptDate = dateFormatter.format(a.getStart());
@@ -579,17 +599,16 @@ public class MainController implements Initializable {
             dateLabel.setOnAction(event -> toDayView(dateLabel.getValue()));
             
             //Populate the columns of the appointment table
-            customerNameCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
-            titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
-            descriptionCol.setCellValueFactory(new PropertyValueFactory<>("description"));
-            locationCol.setCellValueFactory(new PropertyValueFactory<>("location"));
-            typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
-            urlCol.setCellValueFactory(new PropertyValueFactory<>("url"));
-            startCol.setCellValueFactory(new PropertyValueFactory<>("startTime"));
-            endCol.setCellValueFactory(new PropertyValueFactory<>("endTime"));
-            contactCol.setCellValueFactory(new PropertyValueFactory<>("contactName"));
-            
-            dayViewTable.setItems(todaysAppointments);
+                customerNameCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+                titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+                descriptionCol.setCellValueFactory(new PropertyValueFactory<>("description"));
+                locationCol.setCellValueFactory(new PropertyValueFactory<>("location"));
+                typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
+                urlCol.setCellValueFactory(new PropertyValueFactory<>("url"));
+                startCol.setCellValueFactory(new PropertyValueFactory<>("startTime"));
+                endCol.setCellValueFactory(new PropertyValueFactory<>("endTime"));
+                contactCol.setCellValueFactory(new PropertyValueFactory<>("contactName"));
+                dayViewTable.setItems(todaysAppointments);
             
         //**************************
         //Month View Specific Setup
@@ -632,39 +651,37 @@ public class MainController implements Initializable {
         //***************
         //WEEK VIEW SETUP
         //***************
-        LocalDate today = LocalDate.now();
-        java.time.DayOfWeek todaysDay = today.getDayOfWeek();
-        int dayWeek=0;
-        switch (todaysDay){
-            case SUNDAY:
-                dayWeek=1;
-                break;
-            case MONDAY:
-                dayWeek=2;
-                break;
-            case TUESDAY:
-                dayWeek=3;
-                break;
-            case WEDNESDAY:
-                dayWeek=4;
-                break;
-            case THURSDAY:
-                dayWeek=5;
-                break;
-            case FRIDAY:
-                dayWeek=6;
-                break;
-            case SATURDAY:
-                dayWeek=7;
-                break;
-        }
-        int diff = dayWeek - 1;
-        
-        
-        startOfWeek = today.minusDays(diff);
-        endOfWeek = startOfWeek.plusDays(6);
-        updateWeekView();
-        
+            LocalDate today = LocalDate.now();
+            java.time.DayOfWeek todaysDay = today.getDayOfWeek();
+            int dayWeek=0;
+            switch (todaysDay){
+                case SUNDAY:
+                    dayWeek=1;
+                    break;
+                case MONDAY:
+                    dayWeek=2;
+                    break;
+                case TUESDAY:
+                    dayWeek=3;
+                    break;
+                case WEDNESDAY:
+                    dayWeek=4;
+                    break;
+                case THURSDAY:
+                    dayWeek=5;
+                    break;
+                case FRIDAY:
+                    dayWeek=6;
+                    break;
+                case SATURDAY:
+                    dayWeek=7;
+                    break;
+            }
+            int diff = dayWeek - 1;
+
+            startOfWeek = today.minusDays(diff);
+            endOfWeek = startOfWeek.plusDays(6);
+            updateWeekView();
             
         //******************
         //Customer Tab Setup

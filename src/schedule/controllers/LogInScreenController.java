@@ -63,14 +63,14 @@ public class LogInScreenController implements Initializable {
     private Statement stmt;
     private LogFile logFile;
     private Logger logger;
-    
+    private ResourceBundle bundle;
     
     public static User getCurrentUser(){
         return currentUser.get();
     }
 
     
-    public void handleLogInButton(ActionEvent event) {
+    public void handleLogInButton(ActionEvent event) throws IOException {
         
         if (!authorizedUsers.isEmpty()) {
             validLogin = authorizedUsers.stream()
@@ -80,23 +80,23 @@ public class LogInScreenController implements Initializable {
         }
 
         if (validLogin) {
-            
+           
             String logFile = "LOG IN SUCCESSFUL:\n"
                 + "UserName: " + uNameTF.getText() + "\n";
-            logger.info(logFile);  
             
+            new LogFile(logFile);
+
             currentUser = authorizedUsers.stream()
                                          .filter(s -> s.getUserName().equals(uNameTF.getText()))
                                          .findFirst();
             messageBannerLabel.setVisible(false);
             loadScene("main.fxml");
-            this.logFile.closeLog();
         } else {
             messageBannerLabel.setVisible(true);
             String logFile = "INVALID LOG IN ATTEMPT:\n"
                 + "UserName: " + uNameTF.getText() + "\n"
                 + "Password: " + passwordTF.getText() + "\n";
-            logger.warning(logFile);
+            new LogFile(logFile);
         } 
     }
     
@@ -119,12 +119,6 @@ public class LogInScreenController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        try {
-            this.logFile = new LogFile();
-        } catch (IOException ex) {
-            Logger.getLogger(LogInScreenController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        logger = logFile.getLogger();
         authorizedUsers = new ArrayList<>();
         db = new DataBase();
         stmt=null;
@@ -147,7 +141,7 @@ public class LogInScreenController implements Initializable {
         currentLocale = Locale.getDefault();
         //currentLocale = new Locale("fr", "FR");  //UNCOMMENT FOR FRENCH
         currentStage = Schedule.getPrimaryStage();
-        ResourceBundle bundle = ResourceBundle.getBundle("schedule/lang", currentLocale);
+        bundle = ResourceBundle.getBundle("schedule/lang", currentLocale);
         
         uNameTF.setPromptText(bundle.getString("login"));
         passwordTF.setPromptText(bundle.getString("password"));

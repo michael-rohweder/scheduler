@@ -18,17 +18,21 @@ public class LogFile {
     private static Logger logger = Logger.getLogger("logger");
     private static FileHandler fh;
     
-    public LogFile() throws IOException{
+    public LogFile(String logString) throws IOException{
         fh = new FileHandler("LogFile.txt", true);
         logger.addHandler(fh);
         SimpleFormatter formatter = new SimpleFormatter();
         fh.setFormatter(formatter);
+        logger.info(logString);
+        fh.close();
     }
     public Logger getLogger(){
         return this.logger;
     }
     
     public void closeLog(){
-        fh.close();
+        if (fh != null) {
+            fh.close();
+        }
     }
 }

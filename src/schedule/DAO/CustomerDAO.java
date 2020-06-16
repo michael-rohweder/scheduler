@@ -23,15 +23,11 @@ public class CustomerDAO implements DAO<customer> {
     private ObservableList<customer> customers = FXCollections.observableArrayList();
     private DataBase db = new DataBase();
     private final Statement stmt;
-    private LogFile logFile;
-    private Logger logger;
     User currentUser = LogInScreenController.getCurrentUser();
     
     
     public CustomerDAO() throws SQLException, IOException {
         this.stmt = db.createConnection();
-        this.logFile = new LogFile();
-        logger = logFile.getLogger();
     }
     
     @Override
@@ -102,8 +98,10 @@ public class CustomerDAO implements DAO<customer> {
                         
             String logString = "User ID: " + currentUser.getUserId() + "(" + currentUser.getUserName() + ") created a new customer\n"
                     + "Customer ID: " + t.getId() + "(" + t.getName() + ")\n";
-            logger.info(logString);
+            new LogFile(logString);
         } catch (SQLException ex) {
+            Logger.getLogger(CustomerDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
             Logger.getLogger(CustomerDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -162,7 +160,11 @@ public class CustomerDAO implements DAO<customer> {
             
             String logString = "User ID: " + currentUser.getUserId() + "(" + currentUser.getUserName() + ") updated a customer\n"
                 + "Customer ID: " + t.getId() + "(" + t.getName() + ")\n";
-            logger.info(logString);
+            try {
+                new LogFile(logString);
+            } catch (IOException ex) {
+                Logger.getLogger(CustomerDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } catch (SQLException ex) {
             Logger.getLogger(CustomerDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -175,9 +177,10 @@ public class CustomerDAO implements DAO<customer> {
             stmt.executeUpdate(query);
             String logString = "User ID: " + currentUser.getUserId() + "(" + currentUser.getUserName() + ") deleted a customer\n"
                 + "Customer ID: " + t.getId() + "(" + t.getName() + ")\n";
-            logger.info(logString);
-
+            new LogFile (logString);
         } catch (SQLException ex) {
+            Logger.getLogger(CustomerDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
             Logger.getLogger(CustomerDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -207,16 +210,6 @@ public class CustomerDAO implements DAO<customer> {
         }
         return returnID;
     } 
-    
-//    public int getLastID(String table, String search, String IDname) throws SQLException{
-//        String query = "Select * from " + table + " where " + table + "='" + search + "';";
-//        ResultSet rs = stmt.executeQuery(query);
-//        int returnID=-1;
-//        while (rs.next()) {
-//            returnID = rs.getInt(IDname);
-//        }
-//        return returnID;
-//    }
     public int getAddressID(String address1, String address2) throws SQLException{
         String query = "Select * from address where address='" + address1 + "' && address2='" + address2 +"';";
         ResultSet rs = stmt.executeQuery(query);

@@ -69,15 +69,11 @@ public class AddCustomerController implements Initializable {
     @FXML
     private Label address2Label;
     
-    LogFile logFile;
-    Logger logger;
     public Stage primaryStage;
     private User currentUser = LogInScreenController.getCurrentUser();
     private CustomerDAO customerDao;
 
     public AddCustomerController() throws SQLException, IOException {
-        this.logFile = new LogFile();
-        logger = logFile.getLogger();
         this.customerDao = new CustomerDAO();
     }
 
@@ -92,7 +88,6 @@ public class AddCustomerController implements Initializable {
                     Stage mainStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                     mainStage.setScene(mainScene);
                     mainStage.show();
-                    this.logFile.closeLog();
                 } catch (IOException ex) {
                     Logger.getLogger(LogInScreenController.class.getName()).log(Level.SEVERE, null, ex);
                 }

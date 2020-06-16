@@ -3,11 +3,14 @@ package schedule.controllers;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -38,7 +41,7 @@ import schedule.LogFile;
 import schedule.User;
 import schedule.customer;
 
-public class NewAppointmentController implements Initializable {
+public class ModifyAppointmentController implements Initializable {
 
     @FXML
     private DatePicker appointmentDatePicker;
@@ -73,12 +76,15 @@ public class NewAppointmentController implements Initializable {
     private List<User> userList = LogInScreenController.getUsers();
     private AppointmentDAO appointmentDao;
     private DateTimeFormatter timeFormatter;
+    private Appointment selectedAppointment = MainController.getSelectedAppointment();
+    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM-dd-yyyy", Locale.ENGLISH);
+    private customer selectedCustomer;
 
-    
-    public NewAppointmentController() throws SQLException, IOException {
+    public ModifyAppointmentController() throws SQLException, IOException {
         this.appointmentDao = new AppointmentDAO();
     }
-    public void handleSaveButton(ActionEvent event) throws SQLException, IOException {
+    
+    public void handleSaveButton(ActionEvent event) throws SQLException, IOException, ParseException {
         if (checkValidInput()){
             int customer = customerComboBox.getSelectionModel().getSelectedIndex();
             int contact = contactComboBox.getSelectionModel().getSelectedIndex();
@@ -95,10 +101,8 @@ public class NewAppointmentController implements Initializable {
             LocalDateTime startLDT = LocalDateTime.parse(startDateTime, format);
             LocalDateTime endLDT = LocalDateTime.parse(endDateTime, format);
             
-            
-            
             Appointment appointment = new Appointment(
-                    0,
+                    selectedAppointment.getAppointmentId(),
                     selectedCustomer.getId(), 
                     currentUser.getUserId(), 
                     appointmentTitle.getText().toString(), 
@@ -110,20 +114,18 @@ public class NewAppointmentController implements Initializable {
                     startLDT, 
                     endLDT);
             
-            appointmentDao.add(appointment, currentUser);
+            appointmentDao.update(appointment);
             loadScene("main.fxml");
-            String customerName = customerList.get(customer).getName();
-            System.out.println(appointment.getStart());
         }
     }
     
     public boolean checkValidInput(){
-        if (!startTimeComboBox.getSelectionModel().isEmpty()) {
-            if (!endTimeComboBox.getSelectionModel().isEmpty()) {
-                if (!customerComboBox.getSelectionModel().isEmpty()) {
-                    if (!contactComboBox.getSelectionModel().isEmpty()) {
-                        if (!locationComboBox.getSelectionModel().isEmpty()) {
-                            if (!typeComboBox.getSelectionModel().isEmpty()) {
+        if (!startTimeComboBox.getSelectionModel().equals(null)) {
+            if (!endTimeComboBox.getSelectionModel().equals(null)) {
+                if (!customerComboBox.getSelectionModel().equals(null)) {
+                    if (!contactComboBox.getSelectionModel().equals(null)) {
+                        if (!locationComboBox.getSelectionModel().equals(null)) {
+                            if (!typeComboBox.getSelectionModel().equals(null)) {
                                 if (!appointmentTitle.getText().isEmpty()) {
                                     if (!appointmentDescription.getText().isEmpty()) {
                                         if (appointmentDatePicker.getValue() != null){
@@ -211,7 +213,29 @@ public class NewAppointmentController implements Initializable {
             customerList.forEach(c -> customerComboBox.getItems().add(c.getName()));
             userList.forEach(u -> contactComboBox.getItems().add(u.getUserName()));
         
-        
+        //POPULATE FIELDS
+            LocalDate startDate = LocalDate.parse(selectedAppointment.getStartDate(), dateFormatter);
+            appointmentDatePicker.setValue(startDate);
+            appointmentTitle.setText(selectedAppointment.getTitle());
+            appointmentDescription.setText(selectedAppointment.getDescription());
+            startTimeComboBox.getSelectionModel().select(selectedAppointment.getStartTime());
+            endTimeComboBox.getSelectionModel().select(selectedAppointment.getEndTime());
+            
+            customerList.forEach(c -> {
+                if (c.getId() == selectedAppointment.getCustomerId()) {
+                    selectedCustomer = c;
+                }
+            });
+            userList.forEach(u -> {
+               if (u.getUserId() == selectedAppointment.getContact()) {
+                   
+               } 
+            });
+            customerComboBox.getSelectionModel().select(selectedCustomer.getName());
+            contactComboBox.getSelectionModel().select(selectedAppointment.getContactName());
+            locationComboBox.getSelectionModel().select(selectedAppointment.getLocation());
+            typeComboBox.getSelectionModel().select(selectedAppointment.getType());
+            appointmentURLTF.setText(selectedAppointment.getUrl());
         //Post Load processing
             Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
             Platform.runLater(() -> {

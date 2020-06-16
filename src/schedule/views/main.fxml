@@ -14,6 +14,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.TilePane?>
 
 <AnchorPane maxHeight="800.0" maxWidth="1200.0" minHeight="800.0" minWidth="1200.0" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="schedule.controllers.MainController">
    <children>
@@ -58,8 +59,8 @@
                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                             </columnConstraints>
                                             <rowConstraints>
                                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -92,7 +93,6 @@
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                 <RowConstraints minHeight="10.0" prefHeight="30" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                           </GridPane>
                                           <ComboBox fx:id="monthComboBox" layoutX="420.0" layoutY="18.0" prefWidth="150.0" promptText="Month" />
@@ -134,9 +134,38 @@
                   </AnchorPane>
             </content>
           </Tab>
-            <Tab text="Reports">
+            <Tab text="Admin">
                <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TabPane minWidth="1190.0" prefHeight="700.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
+                          <tabs>
+                            <Tab text="Reports">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                              </content>
+                            </Tab>
+                            <Tab text="User Management">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                              </content>
+                            </Tab>
+                              <Tab text="Setup">
+                                 <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <TilePane layoutX="63.0" layoutY="57.0" prefHeight="200.0" prefWidth="200.0">
+                                             <children>
+                                                <Button mnemonicParsing="false" text="Button" />
+                                             </children>
+                                          </TilePane>
+                                       </children>
+                                    </AnchorPane>
+                                 </content>
+                              </Tab>
+                          </tabs>
+                        </TabPane>
+                     </children></AnchorPane>
                </content>
             </Tab>
         </tabs>
@@ -144,7 +173,7 @@
       <Button fx:id="exitButton" layoutX="25.0" layoutY="765.0" mnemonicParsing="false" onAction="#handleExitButton" text="EXIT" />
       <Button fx:id="newAppointmentButton" layoutX="1074.0" layoutY="766.0" mnemonicParsing="false" onAction="#handleNewAppointmentButton" text="New Appointment" />
       <Label fx:id="messageLabel" layoutX="586.0" layoutY="766.0" />
-      <Button fx:id="modifyAppointmentButton" layoutX="905.0" layoutY="766.0" mnemonicParsing="false" text="Modify Appointment" />
-      <Button fx:id="deleteAppointmentButton" layoutX="732.0" layoutY="765.0" mnemonicParsing="false" text="Delete Appointment" />
+      <Button fx:id="modifyAppointmentButton" layoutX="905.0" layoutY="766.0" mnemonicParsing="false" onAction="#handleModifyAppointmentButton" text="Modify Appointment" />
+      <Button fx:id="deleteAppointmentButton" layoutX="732.0" layoutY="765.0" mnemonicParsing="false" onAction="#handleDeleteAppointmentButton" text="Delete Appointment" />
    </children>
 </AnchorPane>

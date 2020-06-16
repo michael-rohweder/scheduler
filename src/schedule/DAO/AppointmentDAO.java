@@ -24,14 +24,10 @@ public class AppointmentDAO implements DAO<Appointment> {
     private ObservableList<Appointment> appointments = FXCollections.observableArrayList();
     private DataBase db = new DataBase();
     private final Statement stmt;
-    private LogFile logFile;
-    private Logger logger;
     User currentUser = LogInScreenController.getCurrentUser();
     
     public AppointmentDAO() throws SQLException, IOException {
         this.stmt = db.createConnection();
-        this.logFile = new LogFile();
-        logger = logFile.getLogger();
     }
     
     @Override
@@ -57,6 +53,7 @@ public class AppointmentDAO implements DAO<Appointment> {
                         rs.getTimestamp("end").toLocalDateTime()
                 ));
             }
+            appointments.forEach(a -> System.err.println("Appt ID: " + a.getAppointmentId() + "\n"));
 
         } catch (SQLException ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
@@ -90,87 +87,71 @@ public class AppointmentDAO implements DAO<Appointment> {
             stmt.executeUpdate(query);
                         
             String logString = "User ID: " + currentUser.getUserId() + "(" + currentUser.getUserName() + ") created a new appointment\n";
-            logger.info(logString);
+            
+            new LogFile(logString);
+            
         } catch (Exception e) {
             Logger.getLogger(AppointmentDAO.class.getName()).log(Level.SEVERE, null, e);
         }
     }
     
-    public int checkAddress(customer c) throws SQLException{
-        String query = "Select * from address where address='" + c.getAddress() + "' && address2='" + c.getAddress2() +"' AND phone='" + c.getPhone() + "' AND postalCode=" + c.getZip() + ";";
-        ResultSet rs = stmt.executeQuery(query);
-        int returnID=-1;
-        while (rs.next()) {
-            returnID = rs.getInt("addressId");
-        }
-        return returnID;
-    }
-    
     @Override
-    public void update(Appointment t) {
-        /*
-        int addressID = -1;
-        try {
-            addressID = checkAddress(t);
-        } catch (SQLException ex) {
-            Logger.getLogger(AppointmentDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        String query;
-        if (addressID == -1){
-            query = ""
-                + "UPDATE customer, address, city, country"
-                + " SET customer.customerName = '" + t.getName() + "',"
-                + " address.address='" + t.getAddress() + "',"
-                + " address.address2='" + t.getAddress2() + "',"
-                + " address.postalCode=" + t.getZip() + ","
-                + " address.phone='" + t.getPhone() + "',"
-                + " city.city='" + t.getCity() + "',"
-                + " country.country='" + t.getCountry() + "'"
-                + " WHERE customer.customerId=" + t.getId()
-                + " AND customer.addressId = address.addressId"
-                + " AND address.cityId = city.cityId"
-                + " AND city.countryId = country.countryId;";
-        } else {
-            query = ""
-                + "UPDATE customer, address, city, country"
-                + " SET customer.customerName = '" + t.getName() + "',"
-                + " customer.addressId = " + addressID + ","
-                + " address.postalCode=" + t.getZip() + ","
-                + " address.phone='" + t.getPhone() + "',"
-                + " city.city='" + t.getCity() + "',"
-                + " country.country='" + t.getCountry() + "'"
-                + " WHERE customer.customerId=" + t.getId()
-                + " AND customer.addressId = address.addressId"
-                + " AND address.cityId = city.cityId"
-                + " AND city.countryId = country.countryId;";
-        }
+    public void update(Appointment t) {        
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        // title, description, location,contact,type,url,start,end, createDate, createdBy, lastUpdate, lastUpdateBy
+           String query = ""
+                + "UPDATE appointment"
+                + " SET customerId=" + t.getCustomerId() + ","
+                + " title='" + t.getTitle() + "',"
+                + " description='" + t.getDescription() + "',"
+                + " location='" + t.getLocation() + "',"
+                + " contact=" + t.getContact() + ","
+                + " type='" + t.getType() + "',"
+                + " url='" + t.getUrl() + "',"
+                + " start='" + t.getStart() + "',"
+                + " end='" + t.getEnd() + "',"
+                + " lastUpdate='" + timestamp + "',"
+                + " lastUpdateBy=" + currentUser.getUserId()
+                + " WHERE appointmentId=" + t.getAppointmentId() + ";";
+           System.err.println(t.getAppointmentId());
         try {
             stmt.executeUpdate(query);
-            
-            
-            String logString = "User ID: " + currentUser.getUserId() + "(" + currentUser.getUserName() + ") updated a customer\n"
-                + "Customer ID: " + t.getId() + "(" + t.getName() + ")\n";
-            logger.info(logString);
+            String logString = "User ID: " + currentUser.getUserId() + "(" + currentUser.getUserName() + ") updated an appointment\n"
+                + "Appointment ID: " + t.getAppointmentId()+ "(" + t.getTitle()+ ")\n";
+            new LogFile(logString);
+        } catch (SQLException ex) {
+            Logger.getLogger(AppointmentDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(AppointmentDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void deleteCustomer(customer c) throws IOException{
+        String query = "DELETE FROM appointment WHERE customerId=" + c.getId() + ";";
+        try {
+            stmt.executeUpdate(query);
+            String logString = "User ID: " + currentUser.getUserId() + "(" + currentUser.getUserName() + ") deleted all appointments associated with:\nCustomer: " + c.getId() + "(" + c.getName() + ")";
+            new LogFile(logString);
         } catch (SQLException ex) {
             Logger.getLogger(AppointmentDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-*/
     }
 
     @Override
     public void delete(Appointment t) {
-        /*
-        String query = "DELETE FROM customer where customerId=" + t.getId();
+        
+        String query = "DELETE FROM appointment where appointmentId=" + t.getAppointmentId();
         try {
             stmt.executeUpdate(query);
-            String logString = "User ID: " + currentUser.getUserId() + "(" + currentUser.getUserName() + ") deleted a customer\n"
-                + "Customer ID: " + t.getId() + "(" + t.getName() + ")\n";
-            logger.info(logString);
+            String logString = "User ID: " + currentUser.getUserId() + "(" + currentUser.getUserName() + ") deleted an appointment\n"
+                + "Appointment ID: " + t.getAppointmentId() + "(" + t.getTitle() + ")\n";
+            new LogFile(logString);
 
         } catch (SQLException ex) {
             Logger.getLogger(AppointmentDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(AppointmentDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-*/
     }
 
     @Override

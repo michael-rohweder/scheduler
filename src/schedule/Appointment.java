@@ -117,6 +117,10 @@ public class Appointment {
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hh:mm a", Locale.ENGLISH);
         return timeFormatter.format(start); 
     }
+    public String getStartDate(){
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM-dd-yyyy", Locale.ENGLISH);
+        return dateFormatter.format(start);
+    }
     public String getEndTime(){
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hh:mm a", Locale.ENGLISH);
         return timeFormatter.format(end); 
