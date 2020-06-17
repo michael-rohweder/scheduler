@@ -46,6 +46,7 @@ import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -70,6 +71,7 @@ import javafx.stage.Stage;
 import schedule.Appointment;
 import schedule.DAO.AppointmentDAO;
 import schedule.DAO.CustomerDAO;
+import schedule.DAO.UserDAO;
 import schedule.DataBase;
 import schedule.LogFile;
 import schedule.User;
@@ -121,6 +123,15 @@ public class MainController implements Initializable {
     @FXML private Button deleteAppointmentButton;
     private ObservableList<Appointment> todaysAppointments;
     
+    //USER MANAGEMENT VARIABLES
+    @FXML private TableView userTV;
+    @FXML private TableColumn<User, String> userIdCol;
+    @FXML private TableColumn<User, String> userNameCol;
+    @FXML private TableColumn<User, String> userActiveCol;
+    private ObservableList<User> users;
+    private UserDAO userDao;
+    private static User selectedUser;
+    
     //GENERAL MAIN FXML VARIABLES
     @FXML Button newAppointmentButton;
     @FXML TabPane schedulePane;
@@ -139,6 +150,7 @@ public class MainController implements Initializable {
     private AppointmentDAO appointmentDAO;
     private List<Appointment> appointment = new ArrayList<>();
     SingleSelectionModel<Tab> viewTabSelect; 
+    SingleSelectionModel<Tab> mainTabSelect;
     private LocalDate viewDayTabDate;
     private DateTimeFormatter dateFormatter;
     private DateTimeFormatter monthFormatter;
@@ -162,6 +174,39 @@ public class MainController implements Initializable {
     
     public static customer getSelectedCustomer(){
         return selectedCustomer;
+    }
+    public static User getSelectedUser(){
+        return selectedUser;
+    }
+    public void handleNewUserButton(ActionEvent event) {
+        loadScene("addUser.fxml");
+    }
+    public void handleEditUserButton(ActionEvent event){
+        selectedUser = (User) userTV.getSelectionModel().getSelectedItem();
+        if (selectedUser != null) {
+            loadScene("modifyUser.fxml");
+        }
+    }
+    public void handleActivateUserButton(ActionEvent event){
+        selectedUser = (User) userTV.getSelectionModel().getSelectedItem();
+        if (selectedUser.getUserId() != 1){
+            int active=-1;
+            if (selectedUser.getActive()==1) {
+                active = 0;
+            } else {
+                active = 1;
+            }
+            int select = users.indexOf(selectedUser);
+            selectedUser.setActive(active);
+            users.get(select).setActive(active);
+            userDao.setActive(selectedUser);
+            userTV.refresh();
+            
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setContentText("ADMIN USER CAN NOT BE DEACTIVATED");
+            alert.show();
+        }
     }
     
     public void handlePreviousWeekButton(ActionEvent event){
@@ -368,6 +413,29 @@ public class MainController implements Initializable {
         });
         dayViewTable.setItems(todaysAppointments);
         dateLabel.setValue(viewDayTabDate);
+        viewTabSelect = schedulePane.getSelectionModel();
+                //viewTabSelect.select(2);
+                mainTabSelect = mainTabPane.getSelectionModel();
+                
+                schedulePane.setOnMouseClicked(event -> refreshDayTab());
+
+//                int calendarSelectedTab = viewTabSelect.getSelectedIndex();
+//                int mainSelectedTab =     mainTabSelect.getSelectedIndex();
+//                
+//                if (mainTabSelection == 0) {
+//                    newAppointmentButton.setVisible(true);
+//                    if (calendarSelectedTab==0) {
+//                        modifyAppointmentButton.setVisible(true);
+//                        deleteAppointmentButton.setVisible(true);
+//                    } else {
+//                        modifyAppointmentButton.setVisible(false);
+//                        deleteAppointmentButton.setVisible(false);
+//                    }
+//                } else {
+//                    modifyAppointmentButton.setVisible(false);
+//                    deleteAppointmentButton.setVisible(false);
+//                    newAppointmentButton.setVisible(false);
+//                }
         int selectedTab = viewTabSelect.getSelectedIndex();
             
             if (selectedTab==0) {
@@ -526,30 +594,43 @@ public class MainController implements Initializable {
         // *************
         // GENERAL SETUP
         //**************
+            
             //Change listener for current selected tab
                 mainTabPane.getSelectionModel().selectedItemProperty().addListener((ob, oldTab, newTab) -> {
                     mainTabSelection = mainTabPane.getSelectionModel().getSelectedIndex();
+                    if (mainTabSelection != 0) {
+                        newAppointmentButton.setVisible(false);
+                        modifyAppointmentButton.setVisible(false);
+                        deleteAppointmentButton.setVisible(false);
+                    } else {
+                        newAppointmentButton.setVisible(true);
+                        refreshMonth();
+                        updateWeekView();
+                        refreshDayTab();
+                        
+                    }
+                    System.err.println("MainTab Listener: " + mainTabSelection);
+
                 });
 
             //Set tab to previously selected tab on load
                 SingleSelectionModel<Tab> mainTab = mainTabPane.getSelectionModel();
                 mainTab.select(mainTabSelection);
+                
+                if (currentUser.getUserId() != 1) {
+                    mainTabPane.getTabs().get(2).setDisable(true);
+                    mainTabPane.getTabs().get(2).setText("Admin - Restricted to admin users only");
+                }
 
             //Set schedule view to monthly by default
                 viewTabSelect = schedulePane.getSelectionModel();
                 viewTabSelect.select(2);
-
+                mainTabSelect = mainTabPane.getSelectionModel();
+                
                 schedulePane.setOnMouseClicked(event -> refreshDayTab());
 
-                int selectedTab = viewTabSelect.getSelectedIndex();
-
-                if (selectedTab==0) {
-                    modifyAppointmentButton.setVisible(true);
-                    deleteAppointmentButton.setVisible(true);
-                } else {
-                    modifyAppointmentButton.setVisible(false);
-                    deleteAppointmentButton.setVisible(false);
-                }
+                modifyAppointmentButton.setVisible(false);
+                deleteAppointmentButton.setVisible(false);
             
             //Load customers from DB
                 customerList = customerDao.getAll();
@@ -695,5 +776,22 @@ public class MainController implements Initializable {
             zipCol.setCellValueFactory(new PropertyValueFactory<>("zip"));
             phoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
             customerTV.setItems(customerList);
+            
+        
+        //*********************
+        //USER MANAGEMENT SETUP
+        //*********************
+            try {
+                userDao = new UserDAO();
+            } catch (SQLException ex) {
+                Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            users = userDao.getAll();
+            userNameCol.setCellValueFactory(new PropertyValueFactory<>("userName"));
+            userIdCol.setCellValueFactory(new PropertyValueFactory<>("userId"));
+            userActiveCol.setCellValueFactory(new PropertyValueFactory<>("active"));
+            userTV.setItems(users);
     }
 }

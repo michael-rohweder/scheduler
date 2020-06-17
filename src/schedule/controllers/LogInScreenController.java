@@ -15,6 +15,8 @@ import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,6 +31,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import schedule.DAO.UserDAO;
 import schedule.DataBase;
 import schedule.LogFile;
 import schedule.Schedule;
@@ -57,24 +60,25 @@ public class LogInScreenController implements Initializable {
     String errorString;
     private Stage primaryStage;
     private static Optional<User> currentUser=null;
-    private static List<User> authorizedUsers;
+    private static ObservableList<User> authorizedUsers = FXCollections.observableArrayList();
     private boolean validLogin = false;
     private DataBase db;
     private Statement stmt;
     private LogFile logFile;
     private Logger logger;
     private ResourceBundle bundle;
+    private UserDAO userDao;
     
     public static User getCurrentUser(){
         return currentUser.get();
     }
-
     
     public void handleLogInButton(ActionEvent event) throws IOException {
         
         if (!authorizedUsers.isEmpty()) {
             validLogin = authorizedUsers.stream()
-                                        .anyMatch(s -> s.getUserName().equals(uNameTF.getText()) && s.getPassword().equals(passwordTF.getText()));
+                                        .anyMatch(s -> s.getActive()==1 && s.getUserName().equals(uNameTF.getText()) && s.getPassword().equals(passwordTF.getText()));
+            
         } else {
             validLogin = false;
         }
@@ -112,34 +116,24 @@ public class LogInScreenController implements Initializable {
         }
     }
     
-    
     public static List getUsers (){
         return authorizedUsers;
     }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        authorizedUsers = new ArrayList<>();
-        db = new DataBase();
-        stmt=null;
         try {
-            stmt = db.createConnection();
-        } catch (SQLException ex) {
-            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
-            System.err.println("*********ERROR***********: " + ex);
-        }
-        try {
-            ResultSet rs = stmt.executeQuery("SELECT userId, userName, password FROM user");
-            while (rs.next()){
-                authorizedUsers.add(new User(rs.getInt("userId"), rs.getString("userName"), rs.getString("password")));
-            }
+            userDao = new UserDAO();
         } catch (SQLException ex) {
             Logger.getLogger(LogInScreenController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(LogInScreenController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+        authorizedUsers = userDao.getAll();
         
         currentLocale = Locale.getDefault();
         //currentLocale = new Locale("fr", "FR");  //UNCOMMENT FOR FRENCH
+        
         currentStage = Schedule.getPrimaryStage();
         bundle = ResourceBundle.getBundle("schedule/lang", currentLocale);
         

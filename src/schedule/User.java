@@ -12,7 +12,7 @@ package schedule;
 public class User {
     
     private String userName, password;
-    private int userId;
+    private int userId, active;
     
     public int getUserId(){
         return this.userId;
@@ -23,10 +23,16 @@ public class User {
     public String getPassword(){
         return this.password;
     }
-    
-    public User(int userId, String userName, String password) {
+    public int getActive(){
+        return this.active;
+    }
+    public void setActive(int active){
+        this.active=active;
+    }
+    public User(int userId, String userName, String password, int active) {
         this.userId = userId;
         this.userName = userName;
         this.password = password;
+        this.active = active;
     }
 }

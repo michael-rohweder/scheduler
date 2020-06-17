@@ -23,11 +23,16 @@ public class UserDAO implements DAO<User> {
     private ObservableList<User> users = FXCollections.observableArrayList();
     private DataBase db = new DataBase();
     private final Statement stmt;
-    User currentUser = LogInScreenController.getCurrentUser();
+    User currentUser;
     
     
     public UserDAO() throws SQLException, IOException {
         this.stmt = db.createConnection();
+        try {
+            currentUser = LogInScreenController.getCurrentUser();
+        } catch (Exception e){
+            Logger.getLogger("NO USER LOGGED IN YET");
+        }
     }
     
     @Override
@@ -35,10 +40,10 @@ public class UserDAO implements DAO<User> {
         
         try {
             users.clear();
-            String query = "SELECT * from user WHERE active=1;";
+            String query = "SELECT * from user;";
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
-                users.add(new User(rs.getInt("userId"), rs.getString("userName"), rs.getString("password")));
+                users.add(new User(rs.getInt("userId"), rs.getString("userName"), rs.getString("password"), rs.getInt("active")));
             }
         } catch (SQLException ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
@@ -50,14 +55,14 @@ public class UserDAO implements DAO<User> {
     public void add(User t, User u) {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         try {
-            String statement = String.format("INSERT IGNORE INTO user (userName, password, active, createDate, createdBy, lastUpdate, lastUpdateBy) values ('%1$s', %2$s, %3$s, '%4$s', %5$s, '%6$s', %7$s)",
+            String statement = String.format("INSERT IGNORE INTO user (userName, password, active, createDate, createdBy, lastUpdate, lastUpdateBy) values ('%1$s', '%2$s', %3$s, '%4$s', %5$s, '%6$s', %7$s)",
                     t.getUserName(),
                     t.getPassword(),
                     1,
                     timestamp.toString(),
-                    u.getUserId(),
+                    currentUser.getUserId(),
                     timestamp.toString(),
-                    u.getUserId());
+                    currentUser.getUserId());
             stmt.executeUpdate(statement);
                         
             String logString = "User ID: " + currentUser.getUserId() + "(" + currentUser.getUserName() + ") created a new user\n"
@@ -70,6 +75,17 @@ public class UserDAO implements DAO<User> {
         }
     }
     
+    public void setActive(User t) {
+        String query = "UPDATE user set active=" + t.getActive() + " where userId=" + t.getUserId() + ";";
+        try {
+            stmt.executeUpdate(query);
+            String logString = "User ID: " + currentUser.getUserId() + "(" + currentUser.getUserName() + ") set user: " + t.getUserId() + "(" + t.getUserName() + ") to active=" + t.getActive();
+            new LogFile(logString);
+        } catch (Exception ex){
+            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     @Override
     public void update(User t) {
         
@@ -78,7 +94,7 @@ public class UserDAO implements DAO<User> {
                 + "UPDATE user"
                 + " SET userName='" + t.getUserName()
                 + "', password='" + t.getPassword()
-                + "' WHERE userId" + t.getUserId() + ";";
+                + "' WHERE userId=" + t.getUserId() + ";";
         try {
             stmt.executeUpdate(query);
             String logString = "User ID: " + currentUser.getUserId() + "(" + currentUser.getUserName() + ") updated a user\n"
@@ -113,7 +129,7 @@ public class UserDAO implements DAO<User> {
             String query = "SELECT * from user WHERE active=1 AND userId=" + Id + ";";
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
-                returnedUser = new User(rs.getInt("userId"), rs.getString("userName"), rs.getString("password")); 
+                returnedUser = new User(rs.getInt("userId"), rs.getString("userName"), rs.getString("password"), rs.getInt("active")); 
             }
 
         } catch (SQLException ex) {

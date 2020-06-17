@@ -343,3 +343,429 @@ Appointment ID: 18(Super Fun Day!!)
 Jun 16, 2020 4:24:02 PM schedule.LogFile <init>
 INFO: User ID: 1(test) Exited the system.
 
+Jun 16, 2020 7:45:25 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: Mike
+
+Jun 16, 2020 7:46:17 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: Mike
+
+Jun 16, 2020 7:46:30 PM schedule.LogFile <init>
+INFO: User ID: 2(Mike) Exited the system.
+
+Jun 16, 2020 7:48:17 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: Mike
+
+Jun 16, 2020 7:48:29 PM schedule.LogFile <init>
+INFO: User ID: 2(Mike) Exited the system.
+
+Jun 16, 2020 7:49:38 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: Mike
+
+Jun 16, 2020 7:49:50 PM schedule.LogFile <init>
+INFO: User ID: 2(Mike) Exited the system.
+
+Jun 16, 2020 7:50:40 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: Mike
+
+Jun 16, 2020 7:50:54 PM schedule.LogFile <init>
+INFO: User ID: 2(Mike) Exited the system.
+
+Jun 16, 2020 7:51:32 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: Mike
+
+Jun 16, 2020 7:51:42 PM schedule.LogFile <init>
+INFO: User ID: 2(Mike) Exited the system.
+
+Jun 16, 2020 7:54:18 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: Mike
+
+Jun 16, 2020 7:54:26 PM schedule.LogFile <init>
+INFO: User ID: 2(Mike) Exited the system.
+
+Jun 16, 2020 7:58:10 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: Mike
+
+Jun 16, 2020 7:58:19 PM schedule.LogFile <init>
+INFO: User ID: 2(Mike) Exited the system.
+
+Jun 16, 2020 7:58:26 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 16, 2020 7:58:49 PM schedule.LogFile <init>
+INFO: User ID: 1(test) Exited the system.
+
+Jun 16, 2020 8:00:46 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: Mike
+
+Jun 16, 2020 8:01:02 PM schedule.LogFile <init>
+INFO: User ID: 2(Mike) Exited the system.
+
+Jun 16, 2020 8:01:12 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 16, 2020 8:06:34 PM schedule.LogFile <init>
+INFO: User ID: 1(test) Exited the system.
+
+Jun 16, 2020 8:16:44 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 16, 2020 8:16:55 PM schedule.LogFile <init>
+INFO: User ID: 1(test) Exited the system.
+
+Jun 16, 2020 8:31:00 PM schedule.LogFile <init>
+INFO: INVALID LOG IN ATTEMPT:
+UserName: test
+Password: test
+
+Jun 16, 2020 8:31:11 PM schedule.LogFile <init>
+INFO: INVALID LOG IN ATTEMPT:
+UserName: test
+Password: test
+
+Jun 16, 2020 8:42:00 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 16, 2020 8:42:31 PM schedule.LogFile <init>
+INFO: User ID: 1(test) Exited the system.
+
+Jun 16, 2020 8:42:40 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 16, 2020 8:46:03 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 16, 2020 8:46:22 PM schedule.LogFile <init>
+INFO: User ID: 1(test) Exited the system.
+
+Jun 16, 2020 8:46:47 PM schedule.LogFile <init>
+INFO: User ID: 1(test) Exited the system.
+
+Jun 16, 2020 8:47:05 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 16, 2020 8:47:45 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 16, 2020 8:47:54 PM schedule.LogFile <init>
+INFO: User ID: 1(test) set user: 2(Mike) to active=0
+Jun 16, 2020 8:48:12 PM schedule.LogFile <init>
+INFO: User ID: 1(test) Exited the system.
+
+Jun 16, 2020 8:51:53 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 16, 2020 8:52:02 PM schedule.LogFile <init>
+INFO: User ID: 1(test) set user: 2(Mike) to active=1
+Jun 16, 2020 8:52:06 PM schedule.LogFile <init>
+INFO: User ID: 1(test) Exited the system.
+
+Jun 16, 2020 8:55:23 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 16, 2020 8:55:32 PM schedule.LogFile <init>
+INFO: User ID: 1(test) set user: 2(Mike) to active=0
+Jun 16, 2020 8:55:35 PM schedule.LogFile <init>
+INFO: User ID: 1(test) set user: 2(Mike) to active=1
+Jun 16, 2020 8:55:38 PM schedule.LogFile <init>
+INFO: User ID: 1(test) Exited the system.
+
+Jun 16, 2020 8:58:09 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 16, 2020 8:58:17 PM schedule.LogFile <init>
+INFO: User ID: 1(test) set user: 2(Mike) to active=0
+Jun 16, 2020 8:58:37 PM schedule.LogFile <init>
+INFO: User ID: 1(test) set user: 2(Mike) to active=1
+Jun 16, 2020 8:58:41 PM schedule.LogFile <init>
+INFO: User ID: 1(test) Exited the system.
+
+Jun 16, 2020 9:02:00 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 16, 2020 9:02:08 PM schedule.LogFile <init>
+INFO: User ID: 1(test) set user: 2(Mike) to active=0
+Jun 16, 2020 9:02:09 PM schedule.LogFile <init>
+INFO: User ID: 1(test) set user: 2(Mike) to active=1
+Jun 16, 2020 9:02:10 PM schedule.LogFile <init>
+INFO: User ID: 1(test) set user: 2(Mike) to active=0
+Jun 16, 2020 9:02:10 PM schedule.LogFile <init>
+INFO: User ID: 1(test) set user: 2(Mike) to active=1
+Jun 16, 2020 9:02:16 PM schedule.LogFile <init>
+INFO: User ID: 1(test) Exited the system.
+
+Jun 16, 2020 9:04:33 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: Mike
+
+Jun 16, 2020 9:04:50 PM schedule.LogFile <init>
+INFO: User ID: 2(Mike) Exited the system.
+
+Jun 16, 2020 9:04:57 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 16, 2020 9:05:06 PM schedule.LogFile <init>
+INFO: User ID: 1(test) set user: 2(Mike) to active=0
+Jun 16, 2020 9:05:07 PM schedule.LogFile <init>
+INFO: User ID: 1(test) Exited the system.
+
+Jun 16, 2020 9:05:30 PM schedule.LogFile <init>
+INFO: INVALID LOG IN ATTEMPT:
+UserName: Mike
+Password: test
+
+Jun 16, 2020 9:06:24 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 16, 2020 9:06:40 PM schedule.LogFile <init>
+INFO: User ID: 1(test) Exited the system.
+
+Jun 16, 2020 9:08:13 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 16, 2020 9:08:22 PM schedule.LogFile <init>
+INFO: User ID: 1(test) set user: 2(Mike) to active=1
+Jun 16, 2020 9:08:35 PM schedule.LogFile <init>
+INFO: User ID: 1(test) Exited the system.
+
+Jun 16, 2020 9:16:00 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 16, 2020 9:18:31 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 16, 2020 9:18:47 PM schedule.LogFile <init>
+INFO: User ID: 1(test) created a new user
+User Name: Junky User)
+
+Jun 16, 2020 9:18:57 PM schedule.LogFile <init>
+INFO: User ID: 1(test) Exited the system.
+
+Jun 16, 2020 9:21:16 PM schedule.LogFile <init>
+INFO: INVALID LOG IN ATTEMPT:
+UserName: test
+Password: tet
+
+Jun 16, 2020 9:21:18 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 16, 2020 9:21:38 PM schedule.LogFile <init>
+INFO: User ID: 1(test) created a new user
+User Name: Frank Sinatra)
+
+Jun 16, 2020 9:21:43 PM schedule.LogFile <init>
+INFO: User ID: 1(test) Exited the system.
+
+Jun 16, 2020 9:22:29 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 16, 2020 9:22:52 PM schedule.LogFile <init>
+INFO: User ID: 1(test) created a new user
+User Name: Matthew West)
+
+Jun 16, 2020 9:23:09 PM schedule.LogFile <init>
+INFO: User ID: 1(test) Exited the system.
+
+Jun 16, 2020 9:29:11 PM schedule.LogFile <init>
+INFO: INVALID LOG IN ATTEMPT:
+UserName: testt
+Password: test
+
+Jun 16, 2020 9:29:15 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 16, 2020 9:29:29 PM schedule.LogFile <init>
+INFO: User ID: 1(test) Exited the system.
+
+Jun 16, 2020 9:30:18 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 16, 2020 9:30:33 PM schedule.LogFile <init>
+INFO: User ID: 1(test) Exited the system.
+
+Jun 16, 2020 9:31:58 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 16, 2020 9:32:23 PM schedule.LogFile <init>
+INFO: User ID: 1(test) Exited the system.
+
+Jun 16, 2020 9:32:41 PM schedule.LogFile <init>
+INFO: User ID: 1(test) Exited the system.
+
+Jun 16, 2020 9:32:45 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 16, 2020 9:33:05 PM schedule.LogFile <init>
+INFO: User ID: 1(test) updated a user
+User ID: 5(Chris Tomlin)
+
+Jun 16, 2020 9:33:14 PM schedule.LogFile <init>
+INFO: User ID: 1(test) set user: 5(Chris Tomlin) to active=0
+Jun 16, 2020 9:33:24 PM schedule.LogFile <init>
+INFO: User ID: 1(test) set user: 5(Chris Tomlin) to active=1
+Jun 16, 2020 9:34:49 PM schedule.LogFile <init>
+INFO: User ID: 1(test) created a new user
+User Name: PopEye the Sailor Man)
+
+Jun 16, 2020 9:35:03 PM schedule.LogFile <init>
+INFO: User ID: 1(test) Exited the system.
+
+Jun 16, 2020 9:42:25 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 16, 2020 9:42:43 PM schedule.LogFile <init>
+INFO: User ID: 1(test) Exited the system.
+
+Jun 16, 2020 9:43:25 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 16, 2020 9:43:35 PM schedule.LogFile <init>
+INFO: User ID: 1(test) Exited the system.
+
+Jun 16, 2020 9:45:45 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 16, 2020 9:45:56 PM schedule.LogFile <init>
+INFO: User ID: 1(test) Exited the system.
+
+Jun 16, 2020 9:49:01 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 16, 2020 9:49:13 PM schedule.LogFile <init>
+INFO: User ID: 1(test) Exited the system.
+
+Jun 16, 2020 9:50:19 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 16, 2020 9:50:41 PM schedule.LogFile <init>
+INFO: User ID: 1(test) Exited the system.
+
+Jun 16, 2020 9:53:07 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 16, 2020 9:54:04 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 16, 2020 9:54:17 PM schedule.LogFile <init>
+INFO: User ID: 1(test) Exited the system.
+
+Jun 16, 2020 9:57:29 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 16, 2020 9:57:48 PM schedule.LogFile <init>
+INFO: User ID: 1(test) Exited the system.
+
+Jun 16, 2020 9:58:24 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 16, 2020 9:58:34 PM schedule.LogFile <init>
+INFO: User ID: 1(test) Exited the system.
+
+Jun 16, 2020 9:59:49 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 16, 2020 10:00:09 PM schedule.LogFile <init>
+INFO: User ID: 1(test) Exited the system.
+
+Jun 16, 2020 10:01:20 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 16, 2020 10:01:39 PM schedule.LogFile <init>
+INFO: User ID: 1(test) Exited the system.
+
+Jun 16, 2020 10:02:56 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 16, 2020 10:03:09 PM schedule.LogFile <init>
+INFO: User ID: 1(test) Exited the system.
+
+Jun 16, 2020 10:05:02 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 16, 2020 10:05:19 PM schedule.LogFile <init>
+INFO: User ID: 1(test) Exited the system.
+
+Jun 16, 2020 10:06:14 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 16, 2020 10:06:30 PM schedule.LogFile <init>
+INFO: User ID: 1(test) Exited the system.
+
+Jun 16, 2020 10:08:19 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 16, 2020 10:08:45 PM schedule.LogFile <init>
+INFO: User ID: 1(test) deleted an appointment
+Appointment ID: 18(Super Fun Day!!)
+
+Jun 16, 2020 10:08:52 PM schedule.LogFile <init>
+INFO: User ID: 1(test) Exited the system.
+
+Jun 16, 2020 10:11:01 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 16, 2020 10:12:32 PM schedule.LogFile <init>
+INFO: User ID: 1(test) deleted an appointment
+Appointment ID: 19(test)
+
+Jun 16, 2020 10:15:11 PM schedule.LogFile <init>
+INFO: LOG IN SUCCESSFUL:
+UserName: test
+
+Jun 16, 2020 10:15:32 PM schedule.LogFile <init>
+INFO: User ID: 1(test) created a new appointment
+
+Jun 16, 2020 10:15:38 PM schedule.LogFile <init>
+INFO: User ID: 1(test) deleted an appointment
+Appointment ID: 20(test)
+
+Jun 16, 2020 10:16:01 PM schedule.LogFile <init>
+INFO: User ID: 1(test) Exited the system.
+

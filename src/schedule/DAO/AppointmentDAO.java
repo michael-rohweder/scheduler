@@ -53,8 +53,6 @@ public class AppointmentDAO implements DAO<Appointment> {
                         rs.getTimestamp("end").toLocalDateTime()
                 ));
             }
-            appointments.forEach(a -> System.err.println("Appt ID: " + a.getAppointmentId() + "\n"));
-
         } catch (SQLException ex) {
             Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -113,7 +111,6 @@ public class AppointmentDAO implements DAO<Appointment> {
                 + " lastUpdate='" + timestamp + "',"
                 + " lastUpdateBy=" + currentUser.getUserId()
                 + " WHERE appointmentId=" + t.getAppointmentId() + ";";
-           System.err.println(t.getAppointmentId());
         try {
             stmt.executeUpdate(query);
             String logString = "User ID: " + currentUser.getUserId() + "(" + currentUser.getUserName() + ") updated an appointment\n"

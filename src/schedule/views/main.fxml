@@ -14,7 +14,6 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.TilePane?>
 
 <AnchorPane maxHeight="800.0" maxWidth="1200.0" minHeight="800.0" minWidth="1200.0" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="schedule.controllers.MainController">
    <children>
@@ -31,7 +30,8 @@
                                  <content>
                                     <AnchorPane maxWidth="1200.0" minWidth="1200.0" prefHeight="200.0" prefWidth="1200.0">
                                        <children>
-                                          <TableView fx:id="dayViewTable" layoutX="5.0" layoutY="50.0" maxWidth="1180.0" minHeight="550.0" minWidth="1180.0" prefHeight="200.0" prefWidth="1180.0">
+                                          <DatePicker fx:id="dateLabel" layoutX="505.0" layoutY="14.0" promptText="mm-dd-yyyy" />
+                                          <TableView fx:id="dayViewTable" layoutX="5.0" layoutY="50.0" maxHeight="525.0" maxWidth="1180.0" minHeight="525.0" minWidth="1180.0" prefHeight="525.0" prefWidth="1180.0">
                                             <columns>
                                               <TableColumn fx:id="customerNameCol" prefWidth="179.3333282470703" text="Customer Name" />
                                               <TableColumn fx:id="titleCol" minWidth="0.0" prefWidth="165.6666717529297" text="Event Title" />
@@ -44,7 +44,6 @@
                                                 <TableColumn fx:id="contactCol" minWidth="0.0" prefWidth="130.3333740234375" text="Employee Contact" />
                                             </columns>
                                           </TableView>
-                                          <DatePicker fx:id="dateLabel" layoutX="505.0" layoutY="14.0" promptText="mm-dd-yyyy" />
                                        </children>
                                     </AnchorPane>
                                  </content></Tab>
@@ -134,7 +133,7 @@
                   </AnchorPane>
             </content>
           </Tab>
-            <Tab text="Admin">
+            <Tab fx:id="adminTab" text="Admin">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -147,18 +146,34 @@
                             </Tab>
                             <Tab text="User Management">
                               <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <TableView fx:id="userTV" layoutX="5.0" layoutY="5.0" maxWidth="1180.0" minWidth="1180.0" prefHeight="200.0" prefWidth="1180.0">
+                                            <columns>
+                                              <TableColumn fx:id="userIdCol" prefWidth="72.33332824707031" text="USER ID" />
+                                              <TableColumn fx:id="userNameCol" prefWidth="1040.6666717529297" text="USER NAME" />
+                                                <TableColumn fx:id="userActiveCol" prefWidth="63.3333740234375" text="ACTIVE" />
+                                            </columns>
+                                          </TableView>
+                                          <ButtonBar layoutX="5.0" layoutY="327.0" maxWidth="1180.0" prefHeight="40.0" prefWidth="1180.0">
+                                            <buttons>
+                                                <Button fx:id="newUserButton" mnemonicParsing="false" onAction="#handleNewUserButton" text="NEW USER" />
+                                              <Button fx:id="editUserButton" mnemonicParsing="false" onAction="#handleEditUserButton" text="EDIT USER" />
+                                                <Button fx:id="controlUserButton" mnemonicParsing="false" onAction="#handleActivateUserButton" text="DE/ACTIVATE USER" />
+                                            </buttons>
+                                          </ButtonBar>
+                                       </children></AnchorPane>
                               </content>
                             </Tab>
                               <Tab text="Setup">
                                  <content>
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>
-                                          <TilePane layoutX="63.0" layoutY="57.0" prefHeight="200.0" prefWidth="200.0">
-                                             <children>
-                                                <Button mnemonicParsing="false" text="Button" />
-                                             </children>
-                                          </TilePane>
+                                          <ComboBox fx:id="openTimeComboBox" layoutX="10.0" layoutY="10.0" prefWidth="150.0" promptText="Select Time" />
+                                          <Label layoutX="200.0" layoutY="16.0" text="Open" />
+                                          <ComboBox fx:id="closedTimeComboBox" layoutX="10.0" layoutY="80.0" prefWidth="150.0" promptText="Select Time" />
+                                          <Label layoutX="200.0" layoutY="86.0" text="Closed" />
+                                          <Button fx:id="saveHoursButton" layoutX="134.0" layoutY="137.0" mnemonicParsing="false" text="SAVE" />
                                        </children>
                                     </AnchorPane>
                                  </content>
@@ -171,9 +186,13 @@
         </tabs>
       </TabPane>
       <Button fx:id="exitButton" layoutX="25.0" layoutY="765.0" mnemonicParsing="false" onAction="#handleExitButton" text="EXIT" />
-      <Button fx:id="newAppointmentButton" layoutX="1074.0" layoutY="766.0" mnemonicParsing="false" onAction="#handleNewAppointmentButton" text="New Appointment" />
       <Label fx:id="messageLabel" layoutX="586.0" layoutY="766.0" />
-      <Button fx:id="modifyAppointmentButton" layoutX="905.0" layoutY="766.0" mnemonicParsing="false" onAction="#handleModifyAppointmentButton" text="Modify Appointment" />
-      <Button fx:id="deleteAppointmentButton" layoutX="732.0" layoutY="765.0" mnemonicParsing="false" onAction="#handleDeleteAppointmentButton" text="Delete Appointment" />
+      <ButtonBar buttonMinWidth="200.0" layoutX="575.0" layoutY="760.0" minWidth="600.0" prefHeight="40.0" prefWidth="200.0">
+        <buttons>
+            <Button fx:id="modifyAppointmentButton" mnemonicParsing="false" onAction="#handleModifyAppointmentButton" text="Modify Appointment" />
+            <Button fx:id="deleteAppointmentButton" mnemonicParsing="false" onAction="#handleDeleteAppointmentButton" text="Delete Appointment" />
+            <Button fx:id="newAppointmentButton" mnemonicParsing="false" onAction="#handleNewAppointmentButton" text="New Appointment" />
+        </buttons>
+      </ButtonBar>
    </children>
 </AnchorPane>

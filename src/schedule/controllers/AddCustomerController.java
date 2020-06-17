@@ -24,6 +24,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
@@ -40,38 +41,23 @@ public class AddCustomerController implements Initializable {
     private Button saveButton;
     @FXML
     private Button cancelButton;
-    @FXML
     private TextField customerNameTF;
-    @FXML
     private TextField addressTF;
-    @FXML
     private TextField address2TF;
-    @FXML
     private TextField cityTF;
-    @FXML
     private TextField countryTF;
-    @FXML
     private TextField zipTF;
-    @FXML
     private TextField phoneTF;
-    @FXML
-    private Label customerNameLabel;
-    @FXML
-    private Label addressLabel;
-    @FXML
-    private Label cityLabel;
-    @FXML
-    private Label countryLabel;
-    @FXML
-    private Label zipLabel;
-    @FXML
-    private Label phoneLabel;
-    @FXML
-    private Label address2Label;
     
     public Stage primaryStage;
     private User currentUser = LogInScreenController.getCurrentUser();
     private CustomerDAO customerDao;
+    @FXML
+    private TextField userNameTF;
+    @FXML
+    private PasswordField passwordTF;
+    @FXML
+    private PasswordField confirmPassWordTF;
 
     public AddCustomerController() throws SQLException, IOException {
         this.customerDao = new CustomerDAO();
