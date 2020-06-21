@@ -137,9 +137,25 @@ public class MainController implements Initializable {
     @FXML TabPane schedulePane;
     @FXML TabPane mainTabPane;
     @FXML Label messageLabel;
-
+    
+    //REPORTING TAB VARIABLES
+    @FXML private GridPane bookingByTypeGP;
+    @FXML private GridPane bookingByLocationGP;
+    @FXML private TableView consultantScheduleTV;
+    @FXML private ComboBox bookingsByTypeMonthComboBox;
+    @FXML private ComboBox bookingsByTypeYearComboBox;
+    @FXML private ComboBox consultantScheduleComboBox;
+    @FXML private ComboBox bookingsByLocationMonthComboBox;
+    @FXML private ComboBox bookingsByLocationYearComboBox;
+    private ObservableList<Appointment> consultantSchedule = FXCollections.observableArrayList();
+    @FXML private TableColumn<Appointment, String> consultantScheduleDateCol;
+    @FXML private TableColumn<Appointment, String> consultantScheduleTimeCol;
+    @FXML private TableColumn<Appointment, String> consultantScheduleCustomerCol;
+    @FXML private TableColumn<Appointment, String> consultantScheduleEventCol;
+    public int typeGPRow=0;
+    public int locationGPRow=0;
+    
     //MISC VARIABLES
-    private Stage primaryStage;
     private User currentUser = LogInScreenController.getCurrentUser();
     private final CustomerDAO customerDao;
     private static customer selectedCustomer;
@@ -167,17 +183,17 @@ public class MainController implements Initializable {
     public static ObservableList getCustomerList(){
         return customerList;
     }
-
     public static Appointment getSelectedAppointment(){
         return selectedAppointment;
     }
-    
     public static customer getSelectedCustomer(){
         return selectedCustomer;
     }
     public static User getSelectedUser(){
         return selectedUser;
     }
+    
+    //BUTTON HANDLERS
     public void handleNewUserButton(ActionEvent event) {
         loadScene("addUser.fxml");
     }
@@ -208,7 +224,6 @@ public class MainController implements Initializable {
             alert.show();
         }
     }
-    
     public void handlePreviousWeekButton(ActionEvent event){
         startOfWeek = startOfWeek.minusDays(7);
         endOfWeek = endOfWeek.minusDays(7);
@@ -217,6 +232,80 @@ public class MainController implements Initializable {
         
         weekRangeLabel.setText(weekRange);
         updateWeekView();
+    }
+    public void handleNextWeekButton(ActionEvent event){
+        startOfWeek = startOfWeek.plusDays(7);
+        endOfWeek = endOfWeek.plusDays(7);
+        
+        String weekRange = dateFormatter.format(startOfWeek) + " - " + dateFormatter.format(endOfWeek);
+        
+        weekRangeLabel.setText(weekRange);
+        
+        updateWeekView();
+    }
+    public void handleModifyAppointmentButton(ActionEvent event){
+        selectedAppointment = (Appointment) dayViewTable.getSelectionModel().getSelectedItem();
+        if (selectedAppointment != null) {
+            loadScene("modifyAppointment.fxml");
+        }
+    }
+    public void handleDeleteAppointmentButton(ActionEvent event){
+        selectedAppointment = (Appointment) dayViewTable.getSelectionModel().getSelectedItem();
+        appointmentDAO.delete(selectedAppointment);
+        todaysAppointments.remove(selectedAppointment);
+        appointments.remove(selectedAppointment);
+        appointment.remove(selectedAppointment);
+        refreshMonth();
+        updateWeekView();
+    }
+    public void handleCustomerDeleteButton(ActionEvent event) throws SQLException, IOException{
+        selectedCustomer = (customer) customerTV.getSelectionModel().getSelectedItem();
+        appointmentDAO.deleteCustomer(selectedCustomer);
+        customerDao.delete(selectedCustomer);
+        customerList.remove(selectedCustomer);
+        refreshMonth();
+        updateWeekView();
+        refreshDayTab();
+    }
+    public void handleNewAppointmentButton () {
+        loadScene("newAppointment.fxml");
+    }
+    public void handleCustomerModifyButton(ActionEvent event){
+        selectedCustomer = (customer) customerTV.getSelectionModel().getSelectedItem();
+        if (selectedCustomer != null){
+            loadScene("modifyCustomer.fxml");
+        }
+    }
+    public void handleCustomerSearchButton(ActionEvent event){
+        if (customerSearchButton.getText().equals("Search")) {
+            customerSearchButton.setText("Clear Search");
+            customerSearchTF.editableProperty().set(false);
+            String searchString = customerSearchTF.getText();
+            
+            //Stream & Lambda to filter the customer list based on search terms
+            ObservableList<customer> filteredList = customerList.stream()
+                    .filter(s -> s.getName().toLowerCase().contains(searchString.toLowerCase()) || 
+                                 s.getAddress().toLowerCase().contains(searchString.toLowerCase()) ||
+                                 s.getCity().toLowerCase().contains(searchString.toLowerCase()) ||
+                                 s.getCountry().toLowerCase().contains(searchString.toLowerCase()) ||
+                                 String.valueOf(s.getZip()).contains(searchString) ||
+                                 s.getPhone().contains(searchString))
+                    .collect(Collectors.toCollection(FXCollections::observableArrayList));
+            customerTV.setItems(filteredList);
+        } else {
+            customerTV.setItems(customerList);
+            customerSearchTF.setText("");
+            customerSearchTF.editableProperty().set(true);
+            customerSearchButton.setText("Search");
+        }
+    }
+    public void handleAddCustomerButton(ActionEvent event){
+       loadScene("addCustomer.fxml");
+    }
+    public void handleExitButton(ActionEvent event) throws IOException {
+        String logFile = "User ID: " + currentUser.getUserId() + "(" + currentUser.getUserName() + ") Exited the system.\n";
+        new LogFile(logFile);
+        System.exit(0);
     }
     
     public void updateWeekView(){
@@ -300,88 +389,6 @@ public class MainController implements Initializable {
             weekGP.add(date, col, 0);
         }
     }
-    
-    public void handleNextWeekButton(ActionEvent event){
-        startOfWeek = startOfWeek.plusDays(7);
-        endOfWeek = endOfWeek.plusDays(7);
-        
-        String weekRange = dateFormatter.format(startOfWeek) + " - " + dateFormatter.format(endOfWeek);
-        
-        weekRangeLabel.setText(weekRange);
-        
-        updateWeekView();
-    }
-    
-    public void handleModifyAppointmentButton(ActionEvent event){
-        selectedAppointment = (Appointment) dayViewTable.getSelectionModel().getSelectedItem();
-        if (selectedAppointment != null) {
-            loadScene("modifyAppointment.fxml");
-        }
-    }
-    
-    public void handleDeleteAppointmentButton(ActionEvent event){
-        selectedAppointment = (Appointment) dayViewTable.getSelectionModel().getSelectedItem();
-        appointmentDAO.delete(selectedAppointment);
-        todaysAppointments.remove(selectedAppointment);
-        appointments.remove(selectedAppointment);
-        appointment.remove(selectedAppointment);
-        refreshMonth();
-        updateWeekView();
-    }
-    
-    public void handleCustomerDeleteButton(ActionEvent event) throws SQLException, IOException{
-        selectedCustomer = (customer) customerTV.getSelectionModel().getSelectedItem();
-        appointmentDAO.deleteCustomer(selectedCustomer);
-        customerDao.delete(selectedCustomer);
-        customerList.remove(selectedCustomer);
-        refreshMonth();
-        updateWeekView();
-        refreshDayTab();
-    }
-    public void handleNewAppointmentButton () {
-        loadScene("newAppointment.fxml");
-    }
-    public void handleCustomerModifyButton(ActionEvent event){
-        selectedCustomer = (customer) customerTV.getSelectionModel().getSelectedItem();
-        if (selectedCustomer != null){
-            loadScene("modifyCustomer.fxml");
-        }
-    }
-    
-    public void handleCustomerSearchButton(ActionEvent event){
-        if (customerSearchButton.getText().equals("Search")) {
-            customerSearchButton.setText("Clear Search");
-            customerSearchTF.editableProperty().set(false);
-            String searchString = customerSearchTF.getText();
-            
-            //Stream & Lambda to filter the customer list based on search terms
-            ObservableList<customer> filteredList = customerList.stream()
-                    .filter(s -> s.getName().toLowerCase().contains(searchString.toLowerCase()) || 
-                                 s.getAddress().toLowerCase().contains(searchString.toLowerCase()) ||
-                                 s.getCity().toLowerCase().contains(searchString.toLowerCase()) ||
-                                 s.getCountry().toLowerCase().contains(searchString.toLowerCase()) ||
-                                 String.valueOf(s.getZip()).contains(searchString) ||
-                                 s.getPhone().contains(searchString))
-                    .collect(Collectors.toCollection(FXCollections::observableArrayList));
-            customerTV.setItems(filteredList);
-        } else {
-            customerTV.setItems(customerList);
-            customerSearchTF.setText("");
-            customerSearchTF.editableProperty().set(true);
-            customerSearchButton.setText("Search");
-        }
-    }
-    
-    public void handleAddCustomerButton(ActionEvent event){
-       loadScene("addCustomer.fxml");
-    }
-    
-    public void handleExitButton(ActionEvent event) throws IOException {
-        String logFile = "User ID: " + currentUser.getUserId() + "(" + currentUser.getUserName() + ") Exited the system.\n";
-        new LogFile(logFile);
-        System.exit(0);
-    }
-    
     public void loadScene(String sceneName){
         sceneName = "schedule/views/" + sceneName;
          try {
@@ -393,13 +400,11 @@ public class MainController implements Initializable {
             Logger.getLogger(LogInScreenController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
     public void toDayView(LocalDate date){
         viewDayTabDate = date;
         viewTabSelect.select(0);
         refreshDayTab();
     }
-    
     public void refreshDayTab(){
         todaysAppointments = FXCollections.observableArrayList();
     //    appointment = appointmentDAO.getAll();
@@ -446,7 +451,6 @@ public class MainController implements Initializable {
                 deleteAppointmentButton.setVisible(false);
             }
     }
-    
     public void refreshMonth(){
        // appointment = appointmentDAO.getAll();
         LocalDateTime thisDate = LocalDateTime.now();
@@ -589,12 +593,37 @@ public class MainController implements Initializable {
         }
     }
     
+    public void updateConsultantSchedule(User u){
+        consultantSchedule.clear();
+        consultantSchedule = appointmentDAO.getConsultantSchedule(u);
+        consultantSchedule.forEach(c -> System.out.println(c.getTitle()));
+        consultantScheduleTV.setItems(consultantSchedule);
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // *************
         // GENERAL SETUP
         //**************
+           
+            List<String> typeList = new ArrayList<>();
+            typeList.add("Laser Tag");
+            typeList.add("VR Game Room");
+            typeList.add("BUMPER CARS");
+            typeList.add("MINI GOLF");
+            typeList.forEach(t -> bookingByTypeGP.add(new Label(t + ": " + String.valueOf(appointmentDAO.getReportByType(t))), 0, typeGPRow++));
             
+            List<String> locationList = new ArrayList<>();
+            locationList.add("London");
+            locationList.add("France");
+            locationList.add("New York");
+            locationList.add("Dallas");
+            locationList.add("Los Angeles");
+            locationList.add("Portland");
+            locationList.forEach(l -> bookingByLocationGP.add(new Label(l + ": " + String.valueOf(appointmentDAO.getReportByLocation(l))), 0, locationGPRow++));
+            
+            //Change Listener for constultant schedule reporting
+                consultantScheduleComboBox.getSelectionModel().selectedItemProperty().addListener(c -> updateConsultantSchedule(users.get(consultantScheduleComboBox.getSelectionModel().getSelectedIndex())));  
             //Change listener for current selected tab
                 mainTabPane.getSelectionModel().selectedItemProperty().addListener((ob, oldTab, newTab) -> {
                     mainTabSelection = mainTabPane.getSelectionModel().getSelectedIndex();
@@ -609,8 +638,6 @@ public class MainController implements Initializable {
                         refreshDayTab();
                         
                     }
-                    System.err.println("MainTab Listener: " + mainTabSelection);
-
                 });
 
             //Set tab to previously selected tab on load
@@ -663,9 +690,19 @@ public class MainController implements Initializable {
                         }
                     });
                     mainStage.setResizable(false);
+                    users.forEach(u -> consultantScheduleComboBox.getItems().add(u.getUserName()));
                 });
-            
+        
+                
         //***********************
+        //REPORTING Specific Setup
+        //***********************
+            consultantScheduleCustomerCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+            consultantScheduleDateCol.setCellValueFactory(new PropertyValueFactory<>("startDate"));
+            consultantScheduleEventCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+            consultantScheduleTimeCol.setCellValueFactory(new PropertyValueFactory<>("startTime"));
+            
+        //****************
         //Day View Specific Setup
         //***********************
             ObservableList<Appointment> todaysAppointments = FXCollections.observableArrayList();

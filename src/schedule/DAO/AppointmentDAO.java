@@ -26,6 +26,59 @@ public class AppointmentDAO implements DAO<Appointment> {
     private final Statement stmt;
     User currentUser = LogInScreenController.getCurrentUser();
     
+    public int getReportByType(String type){
+        String query = "SELECT COUNT(*) FROM appointment where type='" + type + "';";
+        int count=0;
+        try {
+            ResultSet rs = stmt.executeQuery(query);
+            rs.next();
+            count = rs.getInt(1);
+        } catch (Exception e){
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return count;
+    }
+    
+    public int getReportByLocation(String location){
+        String query = "SELECT COUNT(*) FROM appointment where location='" + location + "';";
+        int count=0;
+        try {
+            ResultSet rs = stmt.executeQuery(query);
+            rs.next();
+            count = rs.getInt(1);
+        } catch (Exception e){
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return count;
+    }
+
+    
+    public ObservableList<Appointment> getConsultantSchedule(User u) {
+        String query = "SELECT * FROM appointment where contact=" + u.getUserId() + ";";
+        ObservableList<Appointment> consultantSchedule = FXCollections.observableArrayList();
+        try {
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()){
+                consultantSchedule.add(new Appointment(
+                        rs.getInt("appointmentId"), 
+                        rs.getInt("customerId"), 
+                        rs.getInt("userId"), 
+                        rs.getString("title"), 
+                        rs.getString("description"), 
+                        rs.getString("location"), 
+                        rs.getInt("contact"), 
+                        rs.getString("type"), 
+                        rs.getString("url"), 
+                        rs.getTimestamp("start").toLocalDateTime(), 
+                        rs.getTimestamp("end").toLocalDateTime()
+                ));
+            }
+        } catch (Exception e){
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return consultantSchedule;
+    }
+    
     public AppointmentDAO() throws SQLException, IOException {
         this.stmt = db.createConnection();
     }
